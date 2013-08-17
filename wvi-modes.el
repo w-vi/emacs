@@ -89,7 +89,7 @@
 ; try to automagically figure out indentation
 (setq py-smart-indentation t)
 ; pymacs
-(add-to-list 'load-path "~/.emacs.d/pymacs-0.25")
+(add-to-list 'load-path "~/emacs/pymacs")
 (autoload 'pymacs-apply "pymacs")
 (autoload 'pymacs-call "pymacs")
 (autoload 'pymacs-eval "pymacs" nil t)
