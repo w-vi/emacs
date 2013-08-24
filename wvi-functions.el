@@ -83,3 +83,10 @@
 	     (set-visited-file-name newname)
 	     (set-buffer-modified-p nil)  
 	     t))))
+
+(defun copy-line-or-region ()
+  "Copy current line, or current text selection."
+  (interactive)
+  (if (region-active-p)
+      (kill-ring-save (region-beginning) (region-end))
+    (kill-ring-save (line-beginning-position) (line-beginning-position 2))))

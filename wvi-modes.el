@@ -11,7 +11,13 @@
 
 ;;WINNER MODE
 (when (fboundp 'winner-mode)
-      (winner-mode t))
+  (winner-mode t))
+
+;;IDO-MODE
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode t)
+
 
 ;;ELECTRIC-PAIR
 (when (fboundp 'electric-pair-mode)
@@ -25,14 +31,6 @@
 (require 'tabbar-cfg)
 (tabbar-mode)
 
-;; AUTOPAIR
-;; Only in some modes, really just a programming conveniece
-;;(require 'autopair)
-;;(add-hook 'c-mode-common-hook #'(lambda () (autopair-mode)))
-;;(add-hook 'python-mode-hook #'(lambda () (autopair-mode)))
-;;(add-hook 'lisp-mode-hook #'(lambda () (autopair-mode)))
-;;(add-hook 'emacs-lisp-mode-hook #'(lambda () (autopair-mode)))
-
 ;; HIGHLIGHT CURRENT LINE 
 (global-hl-line-mode t)
 (setq highlight-current-line-globally t)
@@ -41,7 +39,7 @@
 (setq hl-line-face (quote highlight))
 
 ;; FCI - Fill Column Indicator
-(setq fci-rule-column 80)
+(setq fci-rule-column 120)
 (require 'fill-column-indicator)
 (define-globalized-minor-mode
  global-fci-mode fci-mode (lambda () (fci-mode 1)))

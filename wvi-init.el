@@ -1,5 +1,6 @@
 (provide 'wvi-init)
 
+
 ;;; GENERAL SETTINGS
 ; to undo, do M-x tool-bar-mode; 
 (tool-bar-mode -1)
@@ -7,6 +8,7 @@
 
 ;; don't show the startup screen
 (setq inhibit-startup-screen t)
+
 
 ;; line number in all files, all the time
 (global-linum-mode t)
@@ -70,10 +72,15 @@ c-basic-offset 4)
 ;; KEY BINDINGS
 ;; C-c C-d for line duplication
 (global-set-key "\C-c\C-d" 'duplicate-line)
+(global-set-key "\C-cd" 'duplicate-line)
+;;C-c c for copy line
+(global-set-key "\C-cc" 'copy-line-or-region)
 ;; C-c k for killing the rest of the line 
 (global-set-key "\C-ck" 'kill-line)
 ;; C-k for killing the whole line
 (global-set-key "\C-k" 'kill-whole-line)
+;; <Super>TAB for switching windows
+(global-set-key (kbd "s-s") 'other-window)
 ;; C-x C-o find the other file, useful for c/c++
 (global-set-key "\C-x\C-o" 'ff-find-other-file)
 ;; C-q go back to mark, ie point where jumped elsewhere

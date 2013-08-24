@@ -8,7 +8,7 @@
 
 (setq load-path (cons "~/emacs" load-path)) 
 
-(setq custom- "~/emacs/custom.el")
+(setq custom-file "~/emacs/custom.el")
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -25,5 +25,3 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'wvi-init)
-
-
