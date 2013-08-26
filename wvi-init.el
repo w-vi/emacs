@@ -65,6 +65,8 @@ c-basic-offset 4)
 (setq c++-mode-hook (function 
 		     (lambda ()(setq indent-tabs-mode nil)
 		       (setq c-indent-level 4))))
+;;.h are most of the C++ files in my case so use that as default
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 (require 'wvi-functions)
 (require 'wvi-modes)
@@ -85,10 +87,14 @@ c-basic-offset 4)
 (global-set-key "\C-x\C-o" 'ff-find-other-file)
 ;; C-q go back to mark, ie point where jumped elsewhere
 (global-set-key "\C-q" 'pop-global-mark)
-;; Override default tags finding
-(global-set-key "\M-?" 'etags-select-find-tag-at-point)
-;; Override default tags finding
-(global-set-key "\M-." 'etags-select-find-tag)
+;; hide/show hide block
+(global-set-key "\C-cc" 'hs-hide-block) 
+;; hide/show show block
+(global-set-key "\C-ce" 'hs-show-block) 
+;; hide/show hide all
+(global-set-key "\C-c\M-c" 'hs-hide-all) 
+;;hide/show show all
+(global-set-key "\C-c\M-e" 'hs-show-all) 
 
 
 ; man page lookup (by default, f1 is help, but I already know how to

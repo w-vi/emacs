@@ -18,7 +18,6 @@
 (setq ido-everywhere t)
 (ido-mode t)
 
-
 ;;ELECTRIC-PAIR
 (when (fboundp 'electric-pair-mode)
       (electric-pair-mode t))
@@ -30,6 +29,15 @@
 ;; TAB BAR
 (require 'tabbar-cfg)
 (tabbar-mode)
+
+;; HIDE/SHOW
+(add-hook 'c-mode-common-hook #'(lambda () (hs-minor-mode)))
+(add-hook 'python-mode-hook #'(lambda () (hs-minor-mode)))
+(add-hook 'lisp-mode-hook #'(lambda () (hs-minor-mode)))
+(add-hook 'emacs-lisp-mode-hook #'(lambda () (hs-minor-mode)))
+
+;;ORG-MODE
+(setq org-indent-mode t)
 
 ;; HIGHLIGHT CURRENT LINE 
 (global-hl-line-mode t)
