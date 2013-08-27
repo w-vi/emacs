@@ -12,6 +12,8 @@
 
 ;; line number in all files, all the time
 (global-linum-mode t)
+(column-number-mode t)
+(show-paren-mode t)
 
 ; make sure transient mark mode is enabled (it should be by default,
 ; but just in case)
@@ -53,6 +55,20 @@
 ;; ALIASES
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+;;AUTOBACKUP
+(setq backup-directory-alist
+          '((".*" . "~/.emacs.d/backups/")))
+;; always use copying to create backup files (don't clobber symlinks)
+(setq backup-by-copying t)
+;; make numeric backup versions
+(setq version-control t)
+;; number of oldest versions to keep when a new numbered backup is made
+(setq kept-old-versions 0)  ; 2
+;; number of newest versions to keep when a new numbered backup is made
+(setq kept-new-versions 20)  ; 2
+;; delete excess backup versions silently
+(setq delete-old-versions t)
+
 ;; PROGRAMMING STUFF
 ;;C style conventions
 (setq c-default-style "bsd"
@@ -72,6 +88,7 @@ c-basic-offset 4)
 (require 'wvi-modes)
 
 ;; KEY BINDINGS
+
 ;; C-c C-d for line duplication
 (global-set-key "\C-c\C-d" 'duplicate-line)
 (global-set-key "\C-cd" 'duplicate-line)
@@ -87,20 +104,18 @@ c-basic-offset 4)
 (global-set-key "\C-x\C-o" 'ff-find-other-file)
 ;; C-q go back to mark, ie point where jumped elsewhere
 (global-set-key "\C-q" 'pop-global-mark)
-;; hide/show hide block
+
+;; HIDE-SHOW
 (global-set-key "\C-ch" 'hs-hide-block) 
-;; hide/show show block
 (global-set-key "\C-ce" 'hs-show-block) 
-;; hide/show hide all
 (global-set-key "\C-c\M-c" 'hs-hide-all) 
-;;hide/show show all
 (global-set-key "\C-c\M-e" 'hs-show-all) 
 
-
-; man page lookup (by default, f1 is help, but I already know how to
-; bring that up using C-h)
-(define-key global-map [f1]
-(lambda () (interactive) (manual-entry (current-word))))
+;; TABBAR
+(global-set-key [f1] 'tabbar-forward)
+(global-set-key [(control f1)] 'tabbar-backward)
+(global-set-key (kbd "C-S-p") 'tabbar-backward-group)
+(global-set-key (kbd "C-S-n") 'tabbar-forward-group)
 
 ; F2 ??
 
