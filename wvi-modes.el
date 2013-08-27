@@ -50,8 +50,9 @@
 (setq fci-rule-column 120)
 (require 'fill-column-indicator)
 (define-globalized-minor-mode
- global-fci-mode fci-mode (lambda () (fci-mode 1)))
+  global-fci-mode fci-mode (lambda () (fci-mode 1)))
 (global-fci-mode t)
+
 
 ;; YASNIPPET
 (require 'yasnippet)
@@ -74,6 +75,15 @@
 (global-auto-complete-mode t)
 (ac-set-trigger-key "TAB")
 (ac-set-trigger-key "<tab>")
+
+;;READLINE-COMPLETE for getting autocompletition in shell buffer
+(setq explicit-shell-file-name "bash")
+(setq explicit-bash-args '("-c" "export EMACS=; stty echo; bash"))
+(setq comint-process-echoes t)
+(require 'readline-complete)
+(add-to-list 'ac-modes 'shell-mode)
+(add-hook 'shell-mode-hook 'ac-rlc-setup-sources)
+
 
 
 ;; PYTHON
