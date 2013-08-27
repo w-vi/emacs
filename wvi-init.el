@@ -88,7 +88,7 @@ c-basic-offset 4)
 ;; C-q go back to mark, ie point where jumped elsewhere
 (global-set-key "\C-q" 'pop-global-mark)
 ;; hide/show hide block
-(global-set-key "\C-cc" 'hs-hide-block) 
+(global-set-key "\C-ch" 'hs-hide-block) 
 ;; hide/show show block
 (global-set-key "\C-ce" 'hs-show-block) 
 ;; hide/show hide all
@@ -102,15 +102,12 @@ c-basic-offset 4)
 (define-key global-map [f1]
 (lambda () (interactive) (manual-entry (current-word))))
 
-; F2 to spawn another frame
-(define-key global-map [f2] (lambda () (interactive) (make-frame)))
+; F2 ??
 
 ; F3 to kill the other window
 (define-key global-map [f3] (lambda () (interactive) (delete-other-windows)))
 
-; F4 for open file C-x C-f is too long
-(define-key global-map [f4] 
-  (lambda (f) (interactive "FFind File:") (switch-to-buffer (find-file f))))
+; F4 ??
 
 ; F5 for dired buffer of the current directory in the other window
 (define-key global-map [f5]
@@ -126,18 +123,19 @@ c-basic-offset 4)
   (lambda () 
     (interactive) (list-bookmarks) (switch-to-buffer-other-window  "*Bookmark List*")))
 
-;; F8 set bookmark
-;;(define-key global-map [f8] (lambda () (interactive) (xcode-build)))
+;; F8 ?
 
 ; F9 to kill buffer
 (define-key global-map [f9] (lambda () (interactive) (kill-buffer (current-buffer))))
 
 ; F10 put back the windows (winner mode undo)
+; C-F10 winner redo
 (define-key global-map [f10] (lambda () (interactive) (winner-undo)))
+(define-key global-map [(control f10)] (lambda () (interactive) (winner-undo)))
 
 ; F11 undo-tree-undo 
+; C-F11 undo-tree-redo 
 (define-key global-map [f11] (lambda () (interactive) (undo-tree-undo)))
+(define-key global-map [(control f11)] (lambda () (interactive) (undo-tree-redo)))
 
-; F12 undo-tree-redo
-(define-key global-map [f12] (lambda () (interactive) (undo-tree-redo)))
-
+; F12 ?
