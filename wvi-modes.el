@@ -59,11 +59,12 @@
 (setq yas-trigger-key nil)
 (yas-reload-all)
 ;; This is where your snippets will lie.
-(setq yas-root-directory '("~/emacs/yasnippet/snippets"))
-(mapc 'yas-load-directory yas-root-directory)
+(setq yas-snippet-dirs '("~/emacs/yasnippet/snippets"))
+(mapc 'yas-load-directory yas-snippet-dirs)
 (add-hook 'c-mode-common-hook #'(lambda () (yas-minor-mode)))
 (add-hook 'emacs-lisp-mode-hook #'(lambda () (yas-minor-mode)))
 (add-hook 'python-mode-hook #'(lambda () (yas-minor-mode)))
+(add-hook 'org-mode-hook #'(lambda () (yas-minor-mode)))
 (local-set-key "\C-c\C-e" 'yas-expand)
 
 ;; AUTOCOMPLETE
