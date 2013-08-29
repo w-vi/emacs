@@ -65,7 +65,8 @@
 (add-hook 'emacs-lisp-mode-hook #'(lambda () (yas-minor-mode)))
 (add-hook 'python-mode-hook #'(lambda () (yas-minor-mode)))
 (add-hook 'org-mode-hook #'(lambda () (yas-minor-mode)))
-(local-set-key "\C-c\C-e" 'yas-expand)
+(global-set-key [(control f2)] 'yas-insert-snippet)
+(global-set-key [f2] 'yas-expand)
 
 ;; AUTOCOMPLETE
 (require 'auto-complete-config)

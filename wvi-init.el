@@ -117,7 +117,7 @@ c-basic-offset 4)
 (global-set-key (kbd "C-S-p") 'tabbar-backward-group)
 (global-set-key (kbd "C-S-n") 'tabbar-forward-group)
 
-; F2 ??
+; F2 YASNIPPET insert and expand
 
 ; F3 to kill the other window
 (define-key global-map [f3] (lambda () (interactive) (delete-other-windows)))
