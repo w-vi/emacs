@@ -8,6 +8,8 @@
 (add-to-list 'load-path "~/emacs/auto-complete")
 (add-to-list 'load-path "~/emacs/emacs-jedi")
 (add-to-list 'load-path "~/emacs/tabbar")
+(add-to-list 'load-path "~/emacs/expand-region")
+
 
 
 ;; SHELL MODE ... make it nice
@@ -54,12 +56,11 @@
 (setq highlight-current-line-whole-line t)
 (setq hl-line-face (quote highlight))
 
-;; FCI - Fill Column Indicator
-(setq fci-rule-column 120)
-(require 'fill-column-indicator)
-(define-globalized-minor-mode
-  global-fci-mode fci-mode (lambda () (fci-mode 1)))
-(global-fci-mode t)
+;; EXPAND REGION
+(require 'expand-region)
+(global-set-key [f4] 'er/expand-region)
+(global-set-key [(control f4)] 'er/contract-region)
+
 
 ;; YASNIPPET
 (require 'yasnippet)
