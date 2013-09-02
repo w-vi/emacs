@@ -4,6 +4,7 @@
 
 ;;PATHS
 (add-to-list 'load-path "~/emacs/site-lisp")
+(add-to-list 'load-path "~/emacs/o-blog")
 (add-to-list 'load-path "~/emacs/yasnippet")
 (add-to-list 'load-path "~/emacs/auto-complete")
 (add-to-list 'load-path "~/emacs/python-mode")
@@ -17,7 +18,6 @@
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
 (ido-mode t)
-
 
 ;;ELECTRIC-PAIR
 (when (fboundp 'electric-pair-mode)
