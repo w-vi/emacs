@@ -33,27 +33,25 @@
 (require 'ox-html)
 
 
-
 ;;; User-Configurable Variables
 
 (defgroup org-export-dkw nil
   "Options specific to Dokuwiki export back-end."
   :tag "Org Doku Wiki"
   :group 'org-export
-  :version "24.4"
+  :version "24.0"
   :package-version '(Org . "8.0"))
 
-
 ;;; Define Back-End
 
 (org-export-define-derived-backend 'dkw 'html
   :export-block '("DW" "DOKUWIKI")
   :filters-alist '((:filter-parse-tree . org-dkw-separate-elements))
   :menu-entry
-  '(?m "Export to Dokuwiki"
-       ((?M "To temporary buffer"
+  '(?w "Export to Dokuwiki"
+       ((?W "To temporary buffer"
 	    (lambda (a s v b) (org-dkw-export-as-dokuwiki a s v)))
-	(?m "To file" (lambda (a s v b) (org-dkw-export-to-dokuwiki a s v)))
+	(?w "To file" (lambda (a s v b) (org-dkw-export-to-dokuwiki a s v)))
 	(?o "To file and open"
 	    (lambda (a s v b)
 	      (if a (org-dkw-export-to-dokuwiki t s v)
@@ -84,7 +82,6 @@
 		     (verbatim . org-dkw-verbatim)))
 
 
-
 ;;; Filters
 
 (defun org-dkw-separate-elements (tree backend info)
@@ -104,8 +101,6 @@ Assume BACKEND is `dkw'."
   ;; Return updated tree.
   tree)
 
-
-
 ;;; Transcode Functions
 
 ;;;; Bold
@@ -171,9 +166,7 @@ a communication channel."
       (cond
        ;; Cannot create a headline.  Fall-back to a list.
        ((or (org-export-low-level-p headline info)
-	    (not (memq org-dkw-headline-style '(atx setext)))
-	    (and (eq org-dkw-headline-style 'atx) (> level 6))
-	    (and (eq org-dkw-headline-style 'setext) (> level 2)))
+	    (and (> level 6)))
 	(let ((bullet
 	       (if (not (org-export-numbered-headline-p headline info)) "-"
 		 (concat (number-to-string
@@ -183,14 +176,7 @@ a communication channel."
 	  (concat bullet (make-string (- 4 (length bullet)) ? ) heading tags
 		  "\n\n"
 		  (and contents
-		       (replace-regexp-in-string "^" "    " contents)))))
-       ;; Use "Setext" style.
-       ((eq org-dkw-headline-style 'setext)
-	(concat heading tags "\n"
-		(make-string (length heading) (if (= level 1) ?= ?-))
-		"\n\n"
-		contents))
-
+		       (replace-regexp-in-string "^" "    " contents)))))))))
 ;;;; Horizontal Rule
 
 (defun org-dkw-horizontal-rule (horizontal-rule contents info)
@@ -342,6 +328,7 @@ a communication channel."
 
 (defun org-dkw-plain-text (text info)
   "Transcode a TEXT string into Dokuwiki format.
+
 TEXT is the string to transcode.  INFO is a plist holding
 contextual information."
   (when (plist-get info :with-smart-quotes)
@@ -393,7 +380,6 @@ as a communication channel."
   contents)
 
 
-
 ;;; Interactive function
 
 ;;;###autoload

@@ -7,6 +7,7 @@
 (add-to-list 'load-path "~/emacs/yasnippet")
 (add-to-list 'load-path "~/emacs/auto-complete")
 (add-to-list 'load-path "~/emacs/python-mode")
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/org")
 (add-to-list 'load-path "~/emacs/tabbar")
 
 ;;WINNER MODE
@@ -37,7 +38,11 @@
 (add-hook 'emacs-lisp-mode-hook #'(lambda () (hs-minor-mode)))
 
 ;;ORG-MODE
+(require 'org)
 (setq org-indent-mode t)
+;;abbrev and flyspell in org-mode
+(add-hook 'org-mode-hook #'(lambda ()(abbrev-mode t)(flyspell-mode t)))
+(require 'ox-dkw)
 
 ;; HIGHLIGHT CURRENT LINE 
 (global-hl-line-mode t)
@@ -52,7 +57,6 @@
 (define-globalized-minor-mode
   global-fci-mode fci-mode (lambda () (fci-mode 1)))
 (global-fci-mode t)
-
 
 ;; YASNIPPET
 (require 'yasnippet)
