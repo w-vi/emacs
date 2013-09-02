@@ -4,12 +4,14 @@
 
 ;;PATHS
 (add-to-list 'load-path "~/emacs/site-lisp")
-(add-to-list 'load-path "~/emacs/o-blog")
 (add-to-list 'load-path "~/emacs/yasnippet")
 (add-to-list 'load-path "~/emacs/auto-complete")
-(add-to-list 'load-path "~/emacs/python-mode")
-(add-to-list 'load-path "/usr/share/emacs/site-lisp/org")
+(add-to-list 'load-path "~/emacs/emacs-jedi")
 (add-to-list 'load-path "~/emacs/tabbar")
+
+
+;; SHELL MODE ... make it nice
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
 ;;WINNER MODE
 (when (fboundp 'winner-mode)
@@ -92,31 +94,19 @@
 (add-hook 'shell-mode-hook 'ac-rlc-setup-sources)
 
 
-
 ;; PYTHON
-(setq py-install-directory "~/emacs/python-mode")
-(add-to-list 'load-path py-install-directory)
-(require 'python-mode) 
-; use IPython
-(setq-default py-shell-name "ipython")
-(setq-default py-which-bufname "IPython")
-; use the wx backend, for both mayavi and matplotlib
-(setq py-python-command-args 
-  '("--gui=wx" "--pylab=wx" "-colors" "Linux"))
-(setq py-force-py-shell-name-p t)
-; switch to the interpreter after executing code
-(setq py-shell-switch-buffers-on-execute-p t)
-(setq py-switch-buffers-on-execute-p t)
-; don't split windows
-(setq py-split-windows-on-execute-p nil)
-; try to automagically figure out indentation
-(setq py-smart-indentation t)
-; pymacs
-(add-to-list 'load-path "~/emacs/pymacs")
-(autoload 'pymacs-apply "pymacs")
-(autoload 'pymacs-call "pymacs")
-(autoload 'pymacs-eval "pymacs" nil t)
-(autoload 'pymacs-exec "pymacs" nil t)
-(autoload 'pymacs-load "pymacs" nil t)
-(autoload 'pymacs-autoload "pymacs")
-(setq py-load-pymacs-p t)
+;;set ipython as default python shell
+(setq
+ python-shell-interpreter "ipython"
+ python-shell-interpreter-args ""
+ python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+ python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+ python-shell-completion-setup-code
+   "from IPython.core.completerlib import module_completion"
+ python-shell-completion-module-string-code
+   "';'.join(module_completion('''%s'''))\n"
+ python-shell-completion-string-code
+   "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+(require 'jedi)
+(add-hook 'python-mode-hook 'jedi:ac-setup)
+
