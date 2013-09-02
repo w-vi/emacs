@@ -12,6 +12,8 @@
 
 ;; line number in all files, all the time
 (global-linum-mode t)
+(column-number-mode t)
+(show-paren-mode t)
 
 ; make sure transient mark mode is enabled (it should be by default,
 ; but just in case)
@@ -53,6 +55,20 @@
 ;; ALIASES
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+;;AUTOBACKUP
+(setq backup-directory-alist
+          '((".*" . "~/.emacs.d/backups/")))
+;; always use copying to create backup files (don't clobber symlinks)
+(setq backup-by-copying t)
+;; make numeric backup versions
+(setq version-control t)
+;; number of oldest versions to keep when a new numbered backup is made
+(setq kept-old-versions 0)  ; 2
+;; number of newest versions to keep when a new numbered backup is made
+(setq kept-new-versions 20)  ; 2
+;; delete excess backup versions silently
+(setq delete-old-versions t)
+
 ;; PROGRAMMING STUFF
 ;;C style conventions
 (setq c-default-style "bsd"
@@ -65,11 +81,14 @@ c-basic-offset 4)
 (setq c++-mode-hook (function 
 		     (lambda ()(setq indent-tabs-mode nil)
 		       (setq c-indent-level 4))))
+;;.h are most of the C++ files in my case so use that as default
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 (require 'wvi-functions)
 (require 'wvi-modes)
 
 ;; KEY BINDINGS
+
 ;; C-c C-d for line duplication
 (global-set-key "\C-c\C-d" 'duplicate-line)
 (global-set-key "\C-cd" 'duplicate-line)
@@ -85,26 +104,25 @@ c-basic-offset 4)
 (global-set-key "\C-x\C-o" 'ff-find-other-file)
 ;; C-q go back to mark, ie point where jumped elsewhere
 (global-set-key "\C-q" 'pop-global-mark)
-;; Override default tags finding
-(global-set-key "\M-?" 'etags-select-find-tag-at-point)
-;; Override default tags finding
-(global-set-key "\M-." 'etags-select-find-tag)
 
+;; HIDE-SHOW
+(global-set-key "\C-ch" 'hs-hide-block) 
+(global-set-key "\C-ce" 'hs-show-block) 
+(global-set-key "\C-c\M-c" 'hs-hide-all) 
+(global-set-key "\C-c\M-e" 'hs-show-all) 
 
-; man page lookup (by default, f1 is help, but I already know how to
-; bring that up using C-h)
-(define-key global-map [f1]
-(lambda () (interactive) (manual-entry (current-word))))
+;; TABBAR
+(global-set-key [f1] 'tabbar-forward)
+(global-set-key [(control f1)] 'tabbar-backward)
+(global-set-key (kbd "C-S-p") 'tabbar-backward-group)
+(global-set-key (kbd "C-S-n") 'tabbar-forward-group)
 
-; F2 to spawn another frame
-(define-key global-map [f2] (lambda () (interactive) (make-frame)))
+; F2 YASNIPPET insert and expand
 
 ; F3 to kill the other window
 (define-key global-map [f3] (lambda () (interactive) (delete-other-windows)))
 
-; F4 for open file C-x C-f is too long
-(define-key global-map [f4] 
-  (lambda (f) (interactive "FFind File:") (switch-to-buffer (find-file f))))
+; F4 ??
 
 ; F5 for dired buffer of the current directory in the other window
 (define-key global-map [f5]
@@ -120,18 +138,19 @@ c-basic-offset 4)
   (lambda () 
     (interactive) (list-bookmarks) (switch-to-buffer-other-window  "*Bookmark List*")))
 
-;; F8 set bookmark
-;;(define-key global-map [f8] (lambda () (interactive) (xcode-build)))
+;; F8 ?
 
 ; F9 to kill buffer
 (define-key global-map [f9] (lambda () (interactive) (kill-buffer (current-buffer))))
 
 ; F10 put back the windows (winner mode undo)
+; C-F10 winner redo
 (define-key global-map [f10] (lambda () (interactive) (winner-undo)))
+(define-key global-map [(control f10)] (lambda () (interactive) (winner-undo)))
 
 ; F11 undo-tree-undo 
+; C-F11 undo-tree-redo 
 (define-key global-map [f11] (lambda () (interactive) (undo-tree-undo)))
+(define-key global-map [(control f11)] (lambda () (interactive) (undo-tree-redo)))
 
-; F12 undo-tree-redo
-(define-key global-map [f12] (lambda () (interactive) (undo-tree-redo)))
-
+; F12 ?

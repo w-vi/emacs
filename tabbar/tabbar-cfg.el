@@ -81,8 +81,3 @@ With a prefix arg, changes to grouping by major mode."
       (setq tabbar-buffer-groups-function 'tabbar-buffer-groups-by-dir))))
 
 
-;; KEY BINDINGS
-(global-set-key (kbd "<C-tab>") 'tabbar-forward)
-(global-set-key (kbd "<C-S-iso-lefttab>") 'tabbar-backward)
-(global-set-key (kbd "C-S-p") 'tabbar-backward-group)
-(global-set-key (kbd "C-S-n") 'tabbar-forward-group)

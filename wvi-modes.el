@@ -8,6 +8,7 @@
 (add-to-list 'load-path "~/emacs/yasnippet")
 (add-to-list 'load-path "~/emacs/auto-complete")
 (add-to-list 'load-path "~/emacs/python-mode")
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/org")
 (add-to-list 'load-path "~/emacs/tabbar")
 
 ;;WINNER MODE
@@ -31,6 +32,19 @@
 (require 'tabbar-cfg)
 (tabbar-mode)
 
+;; HIDE/SHOW
+(add-hook 'c-mode-common-hook #'(lambda () (hs-minor-mode)))
+(add-hook 'python-mode-hook #'(lambda () (hs-minor-mode)))
+(add-hook 'lisp-mode-hook #'(lambda () (hs-minor-mode)))
+(add-hook 'emacs-lisp-mode-hook #'(lambda () (hs-minor-mode)))
+
+;;ORG-MODE
+(require 'org)
+(setq org-indent-mode t)
+;;abbrev and flyspell in org-mode
+(add-hook 'org-mode-hook #'(lambda ()(abbrev-mode t)(flyspell-mode t)))
+(require 'ox-dkw)
+
 ;; HIGHLIGHT CURRENT LINE 
 (global-hl-line-mode t)
 (setq highlight-current-line-globally t)
@@ -42,7 +56,7 @@
 (setq fci-rule-column 120)
 (require 'fill-column-indicator)
 (define-globalized-minor-mode
- global-fci-mode fci-mode (lambda () (fci-mode 1)))
+  global-fci-mode fci-mode (lambda () (fci-mode 1)))
 (global-fci-mode t)
 
 ;; YASNIPPET
@@ -50,12 +64,14 @@
 (setq yas-trigger-key nil)
 (yas-reload-all)
 ;; This is where your snippets will lie.
-(setq yas-root-directory '("~/emacs/yasnippet/snippets"))
-(mapc 'yas-load-directory yas-root-directory)
+(setq yas-snippet-dirs '("~/emacs/yasnippet/snippets"))
+(mapc 'yas-load-directory yas-snippet-dirs)
 (add-hook 'c-mode-common-hook #'(lambda () (yas-minor-mode)))
 (add-hook 'emacs-lisp-mode-hook #'(lambda () (yas-minor-mode)))
 (add-hook 'python-mode-hook #'(lambda () (yas-minor-mode)))
-(local-set-key "\C-c\C-e" 'yas-expand)
+(add-hook 'org-mode-hook #'(lambda () (yas-minor-mode)))
+(global-set-key [(control f2)] 'yas-insert-snippet)
+(global-set-key [f2] 'yas-expand)
 
 ;; AUTOCOMPLETE
 (require 'auto-complete-config)
@@ -66,6 +82,15 @@
 (global-auto-complete-mode t)
 (ac-set-trigger-key "TAB")
 (ac-set-trigger-key "<tab>")
+
+;;READLINE-COMPLETE for getting autocompletition in shell buffer
+(setq explicit-shell-file-name "bash")
+(setq explicit-bash-args '("-c" "export EMACS=; stty echo; bash"))
+(setq comint-process-echoes t)
+(require 'readline-complete)
+(add-to-list 'ac-modes 'shell-mode)
+(add-hook 'shell-mode-hook 'ac-rlc-setup-sources)
+
 
 
 ;; PYTHON
