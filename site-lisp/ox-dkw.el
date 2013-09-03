@@ -39,7 +39,7 @@
   "Options specific to Dokuwiki export back-end."
   :tag "Org Doku Wiki"
   :group 'org-export
-  :version "24.0"
+  :version "24.3"
   :package-version '(Org . "8.0"))
 
 ;;; Define Back-End

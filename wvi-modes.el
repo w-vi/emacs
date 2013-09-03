@@ -54,6 +54,13 @@
 (setq highlight-current-line-whole-line t)
 (setq hl-line-face (quote highlight))
 
+;; SMEX - M-x ido boost
+(require 'smex)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
 ;; EXPAND REGION
 (require 'expand-region)
 (global-set-key [f4] 'er/expand-region)
