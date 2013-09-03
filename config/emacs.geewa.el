@@ -45,3 +45,15 @@
 	 ("-B" "-d" "english" "--dict-dir"
 	  "/Library/Application Support/cocoAspell/aspell6-en-6.0-0")
 	 nil iso-8859-1)))
+
+(global-set-key (kbd "<f3>") 'ispell-word)
+(global-set-key (kbd "C-S-<f3>") 'flyspell-mode)
+(global-set-key (kbd "C-M-<f3>") 'flyspell-buffer)
+(global-set-key (kbd "C-<f3>") 'flyspell-check-previous-highlighted-word)
+(defun flyspell-check-next-highlighted-word ()
+  "Custom function to spell check next highlighted word"
+  (interactive)
+  (flyspell-goto-next-error)
+  (ispell-word)
+  )
+(global-set-key (kbd "M-<f3>") 'flyspell-check-next-highlighted-word)

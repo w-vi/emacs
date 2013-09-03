@@ -104,7 +104,7 @@
 ;; PYTHON
 ;;set ipython as default python shell
 (setq
- python-shell-interpreter "ipython"
+ python-shell-interpreter "/Library/Frameworks/Python.framework/Versions/2.7/bin/ipython"
  python-shell-interpreter-args ""
  python-shell-prompt-regexp "In \\[[0-9]+\\]: "
  python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
