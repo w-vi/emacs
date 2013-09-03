@@ -9,6 +9,7 @@
 (add-to-list 'load-path "~/emacs/emacs-jedi")
 (add-to-list 'load-path "~/emacs/tabbar")
 (add-to-list 'load-path "~/emacs/expand-region")
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/org")
 
 ;; SHELL MODE ... make it nice
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
