@@ -9,7 +9,6 @@
 (add-to-list 'load-path "~/emacs/emacs-jedi")
 (add-to-list 'load-path "~/emacs/tabbar")
 (add-to-list 'load-path "~/emacs/expand-region")
-(add-to-list 'load-path "/usr/share/emacs/site-lisp/org")
 
 ;; SHELL MODE ... make it nice
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
@@ -46,7 +45,7 @@
 (setq org-indent-mode t)
 ;;abbrev and flyspell in org-mode
 (add-hook 'org-mode-hook #'(lambda ()(abbrev-mode t)(flyspell-mode t)))
-(require 'ox-dkw)
+(require 'ox-wk)
 
 ;; HIGHLIGHT CURRENT LINE 
 (global-hl-line-mode t)
@@ -104,7 +103,7 @@
 ;; PYTHON
 ;;set ipython as default python shell
 (setq
- python-shell-interpreter "/Library/Frameworks/Python.framework/Versions/2.7/bin/ipython"
+ python-shell-interpreter "ipython"
  python-shell-interpreter-args ""
  python-shell-prompt-regexp "In \\[[0-9]+\\]: "
  python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "

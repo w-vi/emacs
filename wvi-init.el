@@ -5,12 +5,13 @@
 ; to undo, do M-x tool-bar-mode; 
 (tool-bar-mode -1)
 (blink-cursor-mode -1) ;; blinking cursor is evil
+(scroll-bar-mode -1) ;; scrollbar is pretty useless
 
-;; don't show the startup screen
+; don't show the startup screen
 (setq inhibit-startup-screen t)
 
-
-;; line number in all files, all the time
+; line and column number in all files, all the time 
+; and please higlight those bloody parenthesis
 (global-linum-mode t)
 (column-number-mode t)
 (show-paren-mode t)
@@ -20,13 +21,14 @@
 (transient-mark-mode t)
 
 ; turn on mouse wheel support for scrolling
+; some people get confused when the mouse dosn't work
 (require 'mwheel)
 (mouse-wheel-mode t)
 
-;;Bug off with  new frames 
+; Bug off with  new frames 
 (setq ns-pop-up-frames nil)
 
-;; Default Emacs does not scroll pages smoothly with down arrow key.
+; Default Emacs does not scroll pages smoothly with down arrow key.
 ; It tries to jump a page-worth.
 ; See this for advice on preventing that 
 ; http://stackoverflow.com/questions/3631220/fix-to-get-smooth-scrolling-in-emacs
@@ -35,8 +37,7 @@
 (setq scroll-margin 2)
 (setq scroll-preserve-screen-position 1)
 
-;; programming conveniences:
-;(show-paren-mode t) ; light-up matching parens
+; programming conveniences:
 (global-font-lock-mode t) ; turn on syntax highlight
 (setq text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
 
@@ -58,30 +59,29 @@
 ;;AUTOBACKUP
 (setq backup-directory-alist
           '((".*" . "~/.emacs.d/backups/")))
-;; always use copying to create backup files (don't clobber symlinks)
+; always use copying to create backup files (don't clobber symlinks)
 (setq backup-by-copying t)
-;; make numeric backup versions
+; make numeric backup versions
 (setq version-control t)
-;; number of oldest versions to keep when a new numbered backup is made
+; number of oldest versions to keep when a new numbered backup is made
 (setq kept-old-versions 0)  ; 2
-;; number of newest versions to keep when a new numbered backup is made
+; number of newest versions to keep when a new numbered backup is made
 (setq kept-new-versions 20)  ; 2
-;; delete excess backup versions silently
+; delete excess backup versions silently
 (setq delete-old-versions t)
 
 ;; PROGRAMMING STUFF
 ;;C style conventions
 (setq c-default-style "bsd"
 c-basic-offset 4)
-
-;;spaces instead of TAB in C/C++ mode
+;spaces instead of TAB in C/C++ mode
 (setq c-mode-hook (function 
 		   (lambda () (setq indent-tabs-mode nil)
 		     (setq c-indent-level 4))))
 (setq c++-mode-hook (function 
 		     (lambda ()(setq indent-tabs-mode nil)
 		       (setq c-indent-level 4))))
-;;.h are most of the C++ files in my case so use that as default
+;.h are most of the C++ files in my case so use that as default
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 (require 'wvi-functions)
@@ -119,12 +119,10 @@ c-basic-offset 4)
 
 ; F2 YASNIPPET insert and expand
 
-; F3 macrobindings
-(global-set-key [f3] 'start-kbd-macro)
-(global-set-key [(control f3)] 'end-kbd-macro)
-(global-set-key [(control shift f3)] 'name-last-kbd-macro)
+; F3 to kill the other window
+(define-key global-map [f3] (lambda () (interactive) (delete-other-windows)))
 
-; F4 expand/contract-region
+; F4 expand-region
 
 ; F5 for dired buffer of the current directory in the other window
 (define-key global-map [f5]
@@ -155,5 +153,4 @@ c-basic-offset 4)
 (define-key global-map [f11] (lambda () (interactive) (undo-tree-undo)))
 (define-key global-map [(control f11)] (lambda () (interactive) (undo-tree-redo)))
 
-; F12
-(define-key global-map [f12] (lambda () (interactive) (delete-other-windows)))
+; F12 ?
