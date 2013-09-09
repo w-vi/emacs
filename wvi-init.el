@@ -119,10 +119,12 @@ c-basic-offset 4)
 
 ; F2 YASNIPPET insert and expand
 
-; F3 to kill the other window
-(define-key global-map [f3] (lambda () (interactive) (delete-other-windows)))
+; F3 macrobindings
+(global-set-key [f3] 'start-kbd-macro)
+(global-set-key [(control f3)] 'end-kbd-macro)
+(global-set-key [(control shift f3)] 'name-last-kbd-macro)
 
-; F4 expand-region
+; F4 expand/contract-region
 
 ; F5 for dired buffer of the current directory in the other window
 (define-key global-map [f5]

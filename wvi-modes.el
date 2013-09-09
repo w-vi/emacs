@@ -45,7 +45,6 @@
 (setq org-indent-mode t)
 ;;abbrev and flyspell in org-mode
 (add-hook 'org-mode-hook #'(lambda ()(abbrev-mode t)(flyspell-mode t)))
-(require 'ox-wk)
 
 ;; HIGHLIGHT CURRENT LINE 
 (global-hl-line-mode t)
