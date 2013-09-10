@@ -32,8 +32,7 @@
 (require 'wvi-init)
 
 ;; ipython path
-(setq python-shell-interprter 
-      "/Library/Frameworks/Python.framework/Versions/2.7/bin/ipython")
+(setq python-shell-interpreter "/Library/Frameworks/Python.framework/Versions/2.7/bin/ipython" )
 
 ;; Agenda files on this machine
 (setq org-agenda-files (append "~/geewa/notification/todo.org"))
