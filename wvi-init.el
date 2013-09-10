@@ -108,7 +108,7 @@ c-basic-offset 4)
 ;; HIDE-SHOW
 (global-set-key "\C-ch" 'hs-hide-block) 
 (global-set-key "\C-ce" 'hs-show-block) 
-(global-set-key "\C-c\M-c" 'hs-hide-all) 
+(global-set-key "\C-c\M-h" 'hs-hide-all) 
 (global-set-key "\C-c\M-e" 'hs-show-all) 
 
 ;; TABBAR

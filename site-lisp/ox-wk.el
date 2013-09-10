@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2012, 2013  Free Software Foundation, Inc.
 
-;; Author: Nicolas Goaziou <n.goaziou@gmail.com>
+;; Author: wvi <vilibald.wanca@gmail.com>
 ;; Keywords: org, wp, wiki
 
 ;; GNU Emacs is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 
 ;;; Commentary:
 
-;; This library implements a Wiki back-end (vanilla flavour) for
+;; This library implements a Wiki back-end (dokuwiki and creole flavours) for
 ;; Org exporter, based on `html' back-end.
 ;;
 ;; It provides two commands for export, depending on the desired
@@ -38,7 +38,7 @@
   "Options specific to Wiki export back-end."
   :tag "Org Wiki"
   :group 'org-export
-  :version "24.4"
+  :version "24.3"
   :package-version '(Org . "8.0"))
 
 (defcustom org-wk-style 'doku
@@ -99,8 +99,8 @@ This variable can be set to either `doku' or `creole' at the moment."
 ;;; Creole functions
 
 (defun org-wk-creole-nowiki (object contents info)
-"Creole has a limited set of markup veru often we 
-leave it as it is and go to preformatted nowiki style"
+"Creole has a limited set of markup very often we 
+leave it as it is and go to preformatted nowiki style. OBJECT is not used atm, it just formats the CONTENTS."
   (format "{{{ %s }}}" contents))
 
 ;;;; Bold
@@ -114,12 +114,15 @@ a communication channel."
 ;;;; Underline
 
 (defun org-wk-underline (underline contents info)
+  "Transcode UNDERLINE object.
+CONTENTS is the text within underline markup.  INFO is a plist used as
+a communication channel."
   (format "__%s__" contents))
 
 ;;;; Code and Verbatim
 
 (defun org-wk-verbatim (verbatim contents info)
-  "Transcode VERBATIM object into Markdown format.
+  "Transcode VERBATIM object.
 CONTENTS is nil.  INFO is a plist used as a communication
 channel."
     (let ((value (org-element-property :value verbatim)))
@@ -129,19 +132,19 @@ channel."
 
 ;;;; Fixed width
 
-(defun org-wk-fixed-width (fixed contents info)
-  "Transcode EXAMPLE-BLOCK element into Markdown format.
+(defun org-wk-fixed-width (fixed-width contents info)
+  "Transcode FIXED-WIDTH element.
 CONTENTS is nil.  INFO is a plist used as a communication
 channel."
-  (let ((value (org-element-property :value fixed)))
+  (let ((value (org-element-property :value fixed-width)))
     (cond
-     ((eq org-wk-style 'creole) (org-wk-creole-nowiki fixed value info))
+     ((eq org-wk-style 'creole) (org-wk-creole-nowiki fixed-width value info))
      (t (format "'' %s ''" value)))))
 
 ;;;; Headline
 
 (defun org-wk-headline (headline contents info)
-  "Transcode HEADLINE element into Markdown format.
+  "Transcode HEADLINE element.
 CONTENTS is the headline contents.  INFO is a plist used as
 a communication channel."
   (unless (org-element-property :footnote-section-p headline)
@@ -182,22 +185,22 @@ a communication channel."
 ;;;; Horizontal Rule
 
 (defun org-wk-horizontal-rule (horizontal-rule contents info)
-  "Transcode HORIZONTAL-RULE element into Markdown format.
-CONTENTS is the horizontal rule contents.  INFO is a plist used
+  "Transcode HORIZONTAL-RULE element.
+CONTENTS is the horizontal rule contents, none is actually used.  INFO is a plist used
 as a communication channel."
   "----")
 
 ;;;; Italic
 
 (defun org-wk-italic (italic contents info)
-  "Transcode ITALIC object into Markdown format.
+  "Transcode ITALIC object.
 CONTENTS is the text within italic markup.  INFO is a plist used
 as a communication channel."
   (format "//%s//" contents))
 
 ;;;; Item
 (defun org-wk-item (item contents info)
-  "Transcode ITEM element into Markdown format.
+  "Transcode ITEM element.
 CONTENTS is the item contents.  INFO is a plist used as
 a communication channel."
   (let* ((plain-list (org-export-get-parent item))
@@ -211,7 +214,7 @@ a communication channel."
 		(and tag (org-export-data tag info))))
 	 (level
 		 ;; Determine level of current item to determine the
-		 ;; correct LaTeX counter to use (enumi, enumii...).
+		 ;; correct indentation or number of bullets to use.
 		 (let ((parent item) (level 0))
 		   (while (memq (org-element-type
 				 (setq parent (org-export-get-parent parent)))
@@ -231,7 +234,7 @@ a communication channel."
 ;;;; Line Break
 
 (defun org-wk-line-break (line-break contents info)
-  "Transcode LINE-BREAK object into Markdown format.
+  "Transcode LINE-BREAK object.
 CONTENTS is nil.  INFO is a plist used as a communication
 channel."
   "  \\")
@@ -239,6 +242,10 @@ channel."
 ;;;; Link
 
 (defun org-wk-link (link contents info)
+"Transcode a LINK object from Org to HTML.
+
+CONTENTS is the description part of the link, or the empty string.
+INFO is a plist holding contextual information.  See `org-export-data'."
   (let ((--link-org-files-as-html-maybe
 	 (function
 	  (lambda (raw-path info)
@@ -312,7 +319,7 @@ channel."
 ;;;; Paragraph
 
 (defun org-wk-paragraph (paragraph contents info)
-  "Transcode PARAGRAPH element into Markdown format.
+  "Transcode PARAGRAPH element.
 CONTENTS is the paragraph contents.  INFO is a plist used as
 a communication channel."
   (let ((first-object (car (org-element-contents paragraph))))
@@ -324,7 +331,7 @@ a communication channel."
 ;;;; Plain List
 
 (defun org-wk-plain-list (plain-list contents info)
-  "Transcode PLAIN-LIST element into wiki format.
+  "Transcode PLAIN-LIST element.
 CONTENTS is the plain-list contents.  INFO is a plist used as
 a communication channel."
   contents)
@@ -332,7 +339,7 @@ a communication channel."
 ;;;; Plain Text
 
 (defun org-wk-plain-text (text info)
-  "Transcode a TEXT string into Markdown format.
+  "Transcode a TEXT string.
 TEXT is the string to transcode.  INFO is a plist holding
 contextual information."
   (when (plist-get info :with-smart-quotes)
@@ -357,7 +364,7 @@ contextual information."
 ;;;; Quote Block
 
 (defun org-wk-quote-block (quote-block contents info)
-  "Transcode QUOTE-BLOCK element into Markdown format.
+  "Transcode QUOTE-BLOCK element.
 CONTENTS is the quote-block contents.  INFO is a plist used as
 a communication channel."
   (replace-regexp-in-string
@@ -367,7 +374,7 @@ a communication channel."
 ;;;; Section
 
 (defun org-wk-section (section contents info)
-  "Transcode SECTION element into Markdown format.
+  "Transcode SECTION element.
 CONTENTS is the section contents.  INFO is a plist used as
 a communication channel."
   contents)
@@ -375,16 +382,22 @@ a communication channel."
 ;;;; Template
 
 (defun org-wk-template (contents info)
-  "Return complete document string after Markdown conversion.
+  "Return complete document string after conversion.
 CONTENTS is the transcoded contents string.  INFO is a plist used
 as a communication channel."
   contents)
 
 ;;;; Table
 (defun org-wk-table (table contents info)
+  "Transcode TABLE element.
+CONTENTS is the table contents.  INFO is a plist used
+as a communication channel."
   contents)
 
 (defun org-wk-table-row  (table-row contents info)
+  "Transcode TABLE-ROW element.
+CONTENTS is the row contents.  INFO is a plist used
+as a communication channel."
  (concat
   (if (org-string-nw-p contents) (format "%s" contents)
      "")
@@ -392,6 +405,10 @@ as a communication channel."
      "^")))
 
 (defun org-wk-table-cell  (table-cell contents info)
+  "Transcode TABLE-CELL element.
+CONTENTS is the table-cell contents.  INFO is a plist used
+as a communication channel. Treat Header cells differently. 
+FIXME : support also row header cells, now headers are in columns only"
   (let ((table-row (org-export-get-parent table-cell)))
     (cond
      ((org-export-table-row-starts-header-p table-row info)
@@ -452,7 +469,6 @@ this command to convert it."
   (interactive)
   (org-export-replace-region-by 'wk))
 
-
 ;;;###autoload
 (defun org-wk-export-to-wiki (&optional async subtreep visible-only)
   "Export current buffer to a Markdown file.
@@ -482,7 +498,6 @@ Return output file's name."
 	  `(expand-file-name
 	    (org-export-to-file 'wk ,outfile ,subtreep ,visible-only)))
       (org-export-to-file 'wk outfile subtreep visible-only))))
-
 
 (provide 'ox-wk)
 
