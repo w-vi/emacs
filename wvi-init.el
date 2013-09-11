@@ -70,6 +70,9 @@
 ; delete excess backup versions silently
 (setq delete-old-versions t)
 
+;; ABBREVS-FILE
+(setq abbrev-file-name "~/emacs/abbrev_defs")
+
 ;; PROGRAMMING STUFF
 ;;C style conventions
 (setq c-default-style "bsd"

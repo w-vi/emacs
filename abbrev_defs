@@ -1,5 +1,26 @@
-;; common auto correction like abbrevs
-(define-abbrev-table 'global-abbrev-table '(
+;;-*-coding: utf-8;-*-
+(define-abbrev-table 'Buffer-menu-mode-abbrev-table '())
+
+(define-abbrev-table 'Custom-mode-abbrev-table '())
+
+(define-abbrev-table 'bibtex-mode-abbrev-table '())
+
+(define-abbrev-table 'calendar-mode-abbrev-table '())
+
+(define-abbrev-table 'comint-mode-abbrev-table '())
+
+(define-abbrev-table 'completion-list-mode-abbrev-table '())
+
+(define-abbrev-table 'doctex-mode-abbrev-table '())
+
+(define-abbrev-table 'emacs-lisp-byte-code-mode-abbrev-table '())
+
+(define-abbrev-table 'emacs-lisp-mode-abbrev-table '())
+
+(define-abbrev-table 'fundamental-mode-abbrev-table '())
+
+(define-abbrev-table 'global-abbrev-table
+  '(
     ("abbout" "about" nil 0)
     ("abotu" "about" nil 0)
     ("abouta" "about a" nil 0)
@@ -115,7 +136,7 @@
     ("becuase" "because" nil 0)
     ("becuse" "because" nil 0)
     ("befoer" "before" nil 0)
-    ("beggining" "beginning" nil 0)
+    ("beggining" "beginning" nil 1)
     ("begining" "beginning" nil 0)
     ("beginining" "beginning" nil 0)
     ("behabviour" "behaviour" nil 0)
@@ -287,6 +308,8 @@
     ("differemt" "different" nil 0)
     ("differnt" "different" nil 0)
     ("diffrent" "different" nil 0)
+    ("direcotries" "directories" nil 0)
+    ("direcotry" "directory" nil 1)
     ("directer" "director" nil 0)
     ("directers" "directors" nil 0)
     ("directiosn" "direction" nil 0)
@@ -310,7 +333,6 @@
     ("doind" "doing" nil 0)
     ("dollers" "dollars" nil 0)
     ("donig" "doing" nil 0)
-    ("dont" "don't" nil 0)
     ("dont" "don't" nil 0)
     ("dosnt" "doesn't" nil 0)
     ("driveing" "driving" nil 0)
@@ -363,7 +385,7 @@
     ("finnally" "finally" nil 0)
     ("finnish" "finish" nil 0)
     ("firends" "friends" nil 0)
-    ("firts" "first" nil 0)
+    ("firts" "first" nil 1)
     ("fixit" "fix it" nil 0)
     ("follwo" "follow" nil 0)
     ("follwoing" "following" nil 0)
@@ -428,7 +450,7 @@
     ("hismelf" "himself" nil 0)
     ("hiten" "hitting" nil 0)
     ("hitten" "hitting" nil 0)
-    ("hlep" "help" nil 0)
+    ("hlep" "help" nil 1)
     ("howerver" "however" nil 0)
     ("hsa" "has" nil 0)
     ("hsi" "his" nil 0)
@@ -445,7 +467,7 @@
     ("hvae" "have" nil 0)
     ("hvaing" "having" nil 0)
     ("hwich" "which" nil 0)
-    ("i" "I" nil 0)
+    ("i" "I" nil 2)
     ("idae" "idea" nil 0)
     ("idaes" "ideas" nil 0)
     ("identifiy" "identify" nil 0)
@@ -515,7 +537,7 @@
     ("libary" "library" nil 0)
     ("librarry" "library" nil 0)
     ("librery" "library" nil 0)
-    ("liek" "like" nil 0)
+    ("liek" "like" nil 1)
     ("liekd" "liked" nil 0)
     ("lieutenent" "lieutenant" nil 0)
     ("liev" "live" nil 0)
@@ -625,6 +647,7 @@
     ("perminent" "permanent" nil 0)
     ("perscriptions" "prescriptions" nil 0)
     ("personalyl" "personally" nil 0)
+    ("platfrom" "platform" nil 0)
     ("pleasent" "pleasant" nil 0)
     ("plugin" "plug-in" nil 0)
     ("poeple" "people" nil 0)
@@ -669,6 +692,9 @@
     ("recieve" "receive" nil 0)
     ("recieved" "received" nil 0)
     ("recieving" "receiving" nil 0)
+    ("recive" "receive" nil 1)
+    ("recived" "received" nil 0)
+    ("reciveing" "receiving" nil 0)
     ("recomend" "recommend" nil 0)
     ("recomendation" "recommendation" nil 0)
     ("recomendations" "recommendations" nil 0)
@@ -819,7 +845,6 @@
     ("thgat" "that" nil 0)
     ("thge" "the" nil 0)
     ("thier" "their" nil 0)
-    ("thier" "their" nil 0)
     ("thigsn" "things" nil 0)
     ("thisyear" "this year" nil 0)
     ("thna" "than" nil 0)
@@ -849,7 +874,7 @@
     ("tothe" "to the" nil 0)
     ("towrad" "toward" nil 0)
     ("traditionalyl" "traditionally" nil 0)
-    ("transfered" "transferred" nil 0)
+    ("transfered" "transferred" nil 1)
     ("truely" "truly" nil 0)
     ("truley" "truly" nil 0)
     ("tryed" "tried" nil 0)
@@ -859,7 +884,6 @@
     ("udnerstand" "understand" nil 0)
     ("understnad" "understand" nil 0)
     ("undert he" "under the" nil 0)
-    ("unicode" "Unicode" nil 0)
     ("unicode" "Unicode" nil 0)
     ("unitedstates" "United States" nil 0)
     ("unliek" "unlike" nil 0)
@@ -927,4 +951,65 @@
     ("ytou" "you" nil 0)
     ("yuo" "you" nil 0)
     ("yuor" "your" nil 0)
-    ))
+   ))
+
+(define-abbrev-table 'help-mode-abbrev-table '())
+
+(define-abbrev-table 'html-mode-abbrev-table '())
+
+(define-abbrev-table 'inferior-python-mode-abbrev-table '())
+
+(define-abbrev-table 'jython-mode-abbrev-table '())
+
+(define-abbrev-table 'latex-mode-abbrev-table '())
+
+(define-abbrev-table 'lisp-mode-abbrev-table '())
+
+(define-abbrev-table 'nxml-mode-abbrev-table '())
+
+(define-abbrev-table 'occur-edit-mode-abbrev-table '())
+
+(define-abbrev-table 'occur-mode-abbrev-table '())
+
+(define-abbrev-table 'org-mode-abbrev-table '())
+
+(define-abbrev-table 'outline-mode-abbrev-table '())
+
+(define-abbrev-table 'package-menu-mode-abbrev-table '())
+
+(define-abbrev-table 'plain-tex-mode-abbrev-table '())
+
+(define-abbrev-table 'process-menu-mode-abbrev-table '())
+
+(define-abbrev-table 'prog-mode-abbrev-table '())
+
+(define-abbrev-table 'python-mode-abbrev-table
+  '(
+   ))
+
+(define-abbrev-table 'python2-mode-abbrev-table '())
+
+(define-abbrev-table 'python3-mode-abbrev-table '())
+
+(define-abbrev-table 'sgml-mode-abbrev-table '())
+
+(define-abbrev-table 'shell-mode-abbrev-table '())
+
+(define-abbrev-table 'slitex-mode-abbrev-table '())
+
+(define-abbrev-table 'snippet-mode-abbrev-table '())
+
+(define-abbrev-table 'special-mode-abbrev-table '())
+
+(define-abbrev-table 'tabulated-list-mode-abbrev-table '())
+
+(define-abbrev-table 'tex-mode-abbrev-table '())
+
+(define-abbrev-table 'tex-shell-abbrev-table '())
+
+(define-abbrev-table 'text-mode-abbrev-table '())
+
+(define-abbrev-table 'vc-git-log-edit-mode-abbrev-table '())
+
+(define-abbrev-table 'vc-git-log-view-mode-abbrev-table '())
+
