@@ -61,7 +61,7 @@
     ("agressive" "aggressive" nil 0)
     ("ahppen" "happen" nil 0)
     ("ahve" "have" nil 0)
-    ("allwasy" "always" nil 0)
+    ("allwasy" "always" nil 1)
     ("allwyas" "always" nil 0)
     ("almots" "almost" nil 0)
     ("almsot" "almost" nil 0)
@@ -970,6 +970,8 @@
 (define-abbrev-table 'occur-edit-mode-abbrev-table '())
 
 (define-abbrev-table 'occur-mode-abbrev-table '())
+
+(define-abbrev-table 'org-export-stack-mode-abbrev-table '())
 
 (define-abbrev-table 'org-mode-abbrev-table '())
 

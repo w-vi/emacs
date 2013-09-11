@@ -53,7 +53,7 @@ This variable can be set to either `doku' or `creole' at the moment."
 
 (org-export-define-derived-backend 'wk 'html
   :export-block '("WK" "WIKI")
-  :filters-alist '((:filter-parse-tree . org-wk-separate-elements))
+;;  :filters-alist '((:filter-parse-tree . org-wk-separate-elements))
   :menu-entry
   '(?w "Export to Wiki"
        ((?W "To temporary buffer"
@@ -64,7 +64,7 @@ This variable can be set to either `doku' or `creole' at the moment."
 	      (if a (org-wk-export-to-wiki t s v)
 		(org-open-file (org-wk-export-to-wiki nil s v)))))))
   :translate-alist '((bold . org-wk-bold)
-		     (code . org-wk-verbatim)
+		     (code . org-wk-code)
 		     (comment . (lambda (&rest args) ""))
 		     (comment-block . (lambda (&rest args) ""))
 		     (example-block . org-wk-verbatim)
@@ -73,7 +73,7 @@ This variable can be set to either `doku' or `creole' at the moment."
 		     (footnote-reference . ignore)
 		     (headline . org-wk-headline)
 		     (horizontal-rule . org-wk-horizontal-rule)
-		     (inline-src-block . org-wk-verbatim)
+		     (inline-src-block . org-wk-code)
 		     (italic . org-wk-italic)
 		     (underline . org-wk-underline)
 		     (item . org-wk-item)
@@ -121,6 +121,17 @@ a communication channel."
 
 ;;;; Code and Verbatim
 
+(defun org-wk-code (code contents info)
+  "Transcode CODE object.
+CONTENTS is nil.  INFO is a plist used as a communication
+channel."
+  (let ((value (org-element-property :value code))
+	(lang (org-element-property :language code)))
+    (cond
+     ((eq org-wk-style 'creole) (org-wk-creole-nowiki code value info))
+     (t (concat "<code " (if lang (format " %s > " lang) "> ") (format "%s </code>" value))))))
+
+
 (defun org-wk-verbatim (verbatim contents info)
   "Transcode VERBATIM object.
 CONTENTS is nil.  INFO is a plist used as a communication
@@ -128,7 +139,7 @@ channel."
     (let ((value (org-element-property :value verbatim)))
       (cond
        ((eq org-wk-style 'creole) (org-wk-creole-nowiki verbatim value info))
-       (t (format "%%%%\n %s\n %%%%`" value)))))
+       (t (format "%%%% %s %%%%" value)))))
 
 ;;;; Fixed width
 
@@ -237,7 +248,7 @@ a communication channel."
   "Transcode LINE-BREAK object.
 CONTENTS is nil.  INFO is a plist used as a communication
 channel."
-  "  \\")
+  "  \\\\ ")
 
 ;;;; Link
 
@@ -278,11 +289,11 @@ INFO is a plist holding contextual information.  See `org-export-data'."
 	   (let ((path (let ((raw-path (org-element-property :path link)))
 			 (if (not (file-name-absolute-p raw-path)) raw-path
 			   (expand-file-name raw-path)))))
-	     (format "{{%s|%s}}"
+	     (format "{{%s|%s}}" path
 		     (let ((caption (org-export-get-caption
 				     (org-export-get-parent-element link))))
-		       (when caption (org-export-data caption info)))
-		     path)))
+		       (if caption (org-export-data caption info) path))
+		     )))
 	  ((string= type "coderef")
 	   (let ((ref (org-element-property :path link)))
 	     (format (org-export-get-coderef-format ref contents)

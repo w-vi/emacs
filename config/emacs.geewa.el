@@ -22,6 +22,7 @@
 ;;Bug off with  new frames 
 (setq ns-pop-up-frames nil)
 
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/org")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 
@@ -60,4 +61,7 @@
   (ispell-word)
   )
 (global-set-key (kbd "M-<f12>") 'flyspell-check-next-highlighted-word)
+
+(add-to-list 'load-path "~/src/org-mode/lisp")
+(add-to-list 'load-path "~/src/org-mode/contrib/lisp")
 
