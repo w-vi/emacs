@@ -49,6 +49,15 @@ This variable can be set to either `doku' or `creole' at the moment."
 	  (const :tag "Use \"Dokuwiki\" style" doku)
 	  (const :tag "Use \"Wiki Creole\" style" creole)))
 
+(defcustom org-wk-org-verbatim 'monospace
+  "Style used to format = and ~ markups in org file. I haven't figured out yet how to distinguish these but prefer to use monospace.
+This variable can be set to either `monospace' or `verbatim'."
+  :group 'org-export-wk
+  :type '(choice
+	  (const :tag "Use \"Monospace\" markup" monospace)
+	  (const :tag "Use \"Verbatim\" markup" verbatim)))
+
+(setq org-wk-style 'creole)
 ;;; Define Back-End
 
 (org-export-define-derived-backend 'wk 'html
@@ -65,6 +74,7 @@ This variable can be set to either `doku' or `creole' at the moment."
 		(org-open-file (org-wk-export-to-wiki nil s v)))))))
   :translate-alist '((bold . org-wk-bold)
 		     (code . org-wk-code)
+		     (src-block . org-wk-src-block)
 		     (comment . (lambda (&rest args) ""))
 		     (comment-block . (lambda (&rest args) ""))
 		     (example-block . org-wk-verbatim)
@@ -86,7 +96,6 @@ This variable can be set to either `doku' or `creole' at the moment."
 		     (plain-list . org-wk-plain-list)
 		     (plain-text . org-wk-plain-text)
 		     (quote-block . org-wk-quote-block)
-		     (quote-section . org-wk-example-block)
 		     (section . org-wk-section)
 		     (template . org-wk-template)
 		     (verbatim . org-wk-verbatim)
@@ -96,12 +105,14 @@ This variable can be set to either `doku' or `creole' at the moment."
 
 ;;; Transcode Functions
 
-;;; Creole functions
+;;; Creole Functions
 
-(defun org-wk-creole-nowiki (object contents info)
+(defun org-wk--creole-nowiki (object contents info &optional newline)
 "Creole has a limited set of markup very often we 
-leave it as it is and go to preformatted nowiki style. OBJECT is not used atm, it just formats the CONTENTS."
-  (format "{{{ %s }}}" contents))
+leave it as it is and go to preformatted nowiki style. OBJECT is not used atm,
+it just formats the CONTENTS. NEWLINE indicates if the markup
+should be on separate lines."
+  (concat "{{{" (when newline "\n") contents "}}}"))
 
 ;;;; Bold
 
@@ -119,6 +130,17 @@ CONTENTS is the text within underline markup.  INFO is a plist used as
 a communication channel."
   (format "__%s__" contents))
 
+;;;; Fixed width
+
+(defun org-wk-fixed-width (fixed-width contents info)
+  "Transcode FIXED-WIDTH element.
+CONTENTS is nil.  INFO is a plist used as a communication
+channel."
+  (let ((value (org-element-property :value fixed-width)))
+    (cond
+     ((eq org-wk-style 'creole) (org-wk--creole-nowiki fixed-width value info))
+     (t (format "'' %s ''" value)))))
+
 ;;;; Code and Verbatim
 
 (defun org-wk-code (code contents info)
@@ -128,9 +150,8 @@ channel."
   (let ((value (org-element-property :value code))
 	(lang (org-element-property :language code)))
     (cond
-     ((eq org-wk-style 'creole) (org-wk-creole-nowiki code value info))
+     ((eq org-wk-style 'creole) (org-wk--creole-nowiki code value info))
      (t (concat "<code " (if lang (format " %s > " lang) "> ") (format "%s </code>" value))))))
-
 
 (defun org-wk-verbatim (verbatim contents info)
   "Transcode VERBATIM object.
@@ -138,19 +159,21 @@ CONTENTS is nil.  INFO is a plist used as a communication
 channel."
     (let ((value (org-element-property :value verbatim)))
       (cond
-       ((eq org-wk-style 'creole) (org-wk-creole-nowiki verbatim value info))
+       ((eq org-wk-style 'creole) (org-wk--creole-nowiki verbatim value info))
+       ((eq org-wk-org-verbatim 'monospace)(org-wk-fixed-width verbatim contents info))
        (t (format "%%%% %s %%%%" value)))))
 
-;;;; Fixed width
+;;;; Src-Block
 
-(defun org-wk-fixed-width (fixed-width contents info)
-  "Transcode FIXED-WIDTH element.
+(defun org-wk-src-block (src-block contents info)
+  "Transcode SRC-BLOCK element.
 CONTENTS is nil.  INFO is a plist used as a communication
 channel."
-  (let ((value (org-element-property :value fixed-width)))
+  (let ((lang (org-element-property :language src-block))
+        (content (org-export-format-code-default src-block info)))
     (cond
-     ((eq org-wk-style 'creole) (org-wk-creole-nowiki fixed-width value info))
-     (t (format "'' %s ''" value)))))
+     ((eq org-wk-style 'creole) (org-wk--creole-nowiki src-block content info t))
+     (t (concat "<code " (if lang (format "%s>\n" lang) ">\n") (format "%s </code>" content))))))
 
 ;;;; Headline
 
@@ -210,6 +233,7 @@ as a communication channel."
   (format "//%s//" contents))
 
 ;;;; Item
+
 (defun org-wk-item (item contents info)
   "Transcode ITEM element.
 CONTENTS is the item contents.  INFO is a plist used as
@@ -233,8 +257,11 @@ a communication channel."
 		     (when (eq (org-element-type parent) 'plain-list)
 		       (incf level)))
 		   level))
-	 (prefix (if (eq org-wk-style 'creole) (if (eq type 'ordered)?* ?#) ? )))
-    (concat (make-string (* 2 level) prefix ) bullet " "
+	 (prefix (if (eq org-wk-style 'creole) (if (eq type 'ordered)?# ?*) ? )))
+    (concat 
+     (if (eq org-wk-style 'doku) (make-string (* 2 level) prefix )
+       (make-string (1- level) prefix))
+     bullet " "
 	    (case checkbox
 	      (on "[X] ")
 	      (trans "[-] ")
@@ -325,7 +352,7 @@ INFO is a plist holding contextual information.  See `org-export-data'."
 			      (concat "file://" (expand-file-name raw-path))))
 			   (t raw-path)))) 
 	       (if (not contents) (format "%s" path)
-		 (format "[[%s |%s]]" path contents)))))))
+		 (format "[[%s|%s]]" path contents)))))))
 
 ;;;; Paragraph
 
@@ -399,6 +426,7 @@ as a communication channel."
   contents)
 
 ;;;; Table
+
 (defun org-wk-table (table contents info)
   "Transcode TABLE element.
 CONTENTS is the table contents.  INFO is a plist used
@@ -409,11 +437,15 @@ as a communication channel."
   "Transcode TABLE-ROW element.
 CONTENTS is the row contents.  INFO is a plist used
 as a communication channel."
- (concat
-  (if (org-string-nw-p contents) (format "%s" contents)
-     "")
-  (when (org-export-table-row-ends-header-p table-row info)
-     "^")))
+  (cond 
+   ((eq org-wk-style 'creole) 
+    (concat
+     (if (org-string-nw-p contents) (format "|%s" contents) "")))
+   (t (concat
+       (if (org-string-nw-p contents) (format "%s" contents)
+	 "")
+       (when (org-export-table-row-ends-header-p table-row info)
+	 "^")))))
 
 (defun org-wk-table-cell  (table-cell contents info)
   "Transcode TABLE-CELL element.
@@ -423,9 +455,11 @@ FIXME : support also row header cells, now headers are in columns only"
   (let ((table-row (org-export-get-parent table-cell)))
     (cond
      ((org-export-table-row-starts-header-p table-row info)
-       (concat "^ " contents)) 
+       (if (eq org-wk-style 'doku)(concat "^ " contents) 
+	 (format "=%s|" contents))) 
      ((org-export-table-cell-starts-colgroup-p table-cell info)
-      (concat "|" contents "|"))
+      (if (eq org-wk-style 'doku) (concat "|" contents "|") 
+	(format "%s|" contents)))
      (t (concat contents "|")))))
 
 ;;; Interactive function
@@ -433,7 +467,7 @@ FIXME : support also row header cells, now headers are in columns only"
 ;;;###autoload
 
 (defun org-wk-export-as-wiki (&optional async subtreep visible-only)
-  "Export current buffer to a Markdown buffer.
+  "Export current buffer to a Wiki buffer.
 
 If narrowing is active in the current buffer, only export its
 narrowed part.
@@ -451,7 +485,7 @@ first.
 When optional argument VISIBLE-ONLY is non-nil, don't export
 contents of hidden elements.
 
-Export is done in a buffer named \"*Org MD Export*\", which will
+Export is done in a buffer named \"*Org Wiki Export*\", which will
 be displayed when `org-export-show-temporary-export-buffer' is
 non-nil."
   (interactive)
@@ -463,7 +497,7 @@ non-nil."
 	      (insert output)
 	      (goto-char (point-min))
 	      (text-mode)
-	      (org-export-add-to-stack (current-buffer) 'md)))
+	      (org-export-add-to-stack (current-buffer) 'wk)))
 	`(org-export-as 'wk ,subtreep ,visible-only))
     (let ((outbuf (org-export-to-buffer
 		   'wk "*Org Wiki Export*" subtreep visible-only)))
@@ -473,16 +507,16 @@ non-nil."
 
 ;;;###autoload
 (defun org-wk-convert-region-to-wk ()
-  "Assume the current region has org-mode syntax, and convert it to Markdown.
+  "Assume the current region has org-mode syntax, and convert it to Wiki syntax.
 This can be used in any buffer.  For example, you can write an
-itemized list in org-mode syntax in a Markdown buffer and use
+itemized list in org-mode syntax in a Wiki sytntax buffer and use
 this command to convert it."
   (interactive)
   (org-export-replace-region-by 'wk))
 
 ;;;###autoload
 (defun org-wk-export-to-wiki (&optional async subtreep visible-only)
-  "Export current buffer to a Markdown file.
+  "Export current buffer to a Wiki sytntax text file.
 
 If narrowing is active in the current buffer, only export its
 narrowed part.
@@ -511,9 +545,5 @@ Return output file's name."
       (org-export-to-file 'wk outfile subtreep visible-only))))
 
 (provide 'ox-wk)
-
-;; Local variables:
-;; generated-autoload-file: "org-loaddefs.el"
-;; End:
 
 ;;; ox-wk.el ends here
