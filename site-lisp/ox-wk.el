@@ -21,7 +21,8 @@
 ;;; Commentary:
 
 ;; This library implements a Wiki back-end (dokuwiki and creole flavours) for
-;; Org exporter, based on `html' back-end.
+;; Org exporter, based on `html' back-end. I have started based on Markdown 
+;; backend and it deserves to be mentioned here for this reason.
 ;;
 ;; It provides two commands for export, depending on the desired
 ;; output: `org-wk-export-as-wiki' (temporary buffer) and
@@ -61,7 +62,7 @@ This variable can be set to either `monospace' or `verbatim'."
 
 (org-export-define-derived-backend 'wk 'html
   :export-block '("WK" "WIKI")
-;;  :filters-alist '((:filter-parse-tree . org-wk-separate-elements))
+  ;;  :filters-alist '((:filter-parse-tree . org-wk-separate-elements))
   :menu-entry
   '(?w "Export to Wiki"
        ((?W "To temporary buffer"
@@ -76,7 +77,7 @@ This variable can be set to either `monospace' or `verbatim'."
 		     (src-block . org-wk-src-block)
 		     (comment . (lambda (&rest args) ""))
 		     (comment-block . (lambda (&rest args) ""))
-		     (example-block . org-wk-verbatim)
+		     (example-block . org-wk-src-block)
 		     (fixed-width . org-wk-fixed-width)
 		     (footnote-definition . ignore)
 		     (footnote-reference . ignore)
@@ -107,7 +108,7 @@ This variable can be set to either `monospace' or `verbatim'."
 ;;; Creole Functions
 
 (defun org-wk--creole-nowiki (object contents info &optional newline)
-"Creole has a limited set of markup very often we 
+  "Creole has a limited set of markup very often we 
 leave it as it is and go to preformatted nowiki style. OBJECT is not used atm,
 it just formats the CONTENTS. NEWLINE indicates if the markup
 should be on separate lines."
@@ -150,17 +151,17 @@ channel."
 	(lang (org-element-property :language code)))
     (cond
      ((eq org-wk-style 'creole) (org-wk--creole-nowiki code value info))
-     (t (concat "<code " (if lang (format " %s > " lang) "> ") (format "%s </code>" value))))))
+     (t (concat "<code" (if lang (format " %s > " lang) "> ") (format "%s </code>" value))))))
 
 (defun org-wk-verbatim (verbatim contents info)
   "Transcode VERBATIM object.
 CONTENTS is nil.  INFO is a plist used as a communication
 channel."
-    (let ((value (org-element-property :value verbatim)))
-      (cond
-       ((eq org-wk-style 'creole) (org-wk--creole-nowiki verbatim value info))
-       ((eq org-wk-org-verbatim 'monospace)(org-wk-fixed-width verbatim contents info))
-       (t (format "%%%% %s %%%%" value)))))
+  (let ((value (org-element-property :value verbatim)))
+    (cond
+     ((eq org-wk-style 'creole) (org-wk--creole-nowiki verbatim value info))
+     ((eq org-wk-org-verbatim 'monospace)(org-wk-fixed-width verbatim contents info))
+     (t (format "%%%% %s %%%%" value)))))
 
 ;;;; Src-Block
 
@@ -172,7 +173,7 @@ channel."
         (content (org-export-format-code-default src-block info)))
     (cond
      ((eq org-wk-style 'creole) (org-wk--creole-nowiki src-block content info t))
-     (t (concat "<code " (if lang (format "%s>\n" lang) ">\n") (format "%s </code>" content))))))
+     (t (concat "<code" (if lang (format " %s>\n" lang) ">\n") (format "%s </code>" content))))))
 
 ;;;; Headline
 
@@ -206,14 +207,14 @@ a communication channel."
 	    (and (eq org-wk-style 'creole) (> level 6)))
 	(let ((bullet
 	       (if (not (org-export-numbered-headline-p headline info)) "*" "-" )
-	  (concat "  " bullet heading tags
-		  "\n\n"
-		  (and contents
-		       (replace-regexp-in-string "^" "    " contents)))))))
+	       (concat "  " bullet heading tags
+		       "\n\n"
+		       (and contents
+			    (replace-regexp-in-string "^" "    " contents)))))))
        ((eq org-wk-style 'creole)	
 	(concat (make-string level ?=) " " heading tags "\n\n" contents))
        (t (let ((markup (make-string (- 7 level) ?=)))
-	  (concat markup " " heading tags " " markup "\n\n" contents)))))))
+	    (concat markup " " heading tags " " markup "\n\n" contents)))))))
 
 ;;;; Horizontal Rule
 
@@ -247,26 +248,26 @@ a communication channel."
 	 (tag (let ((tag (org-element-property :tag item)))
 		(and tag (org-export-data tag info))))
 	 (level
-		 ;; Determine level of current item to determine the
-		 ;; correct indentation or number of bullets to use.
-		 (let ((parent item) (level 0))
-		   (while (memq (org-element-type
-				 (setq parent (org-export-get-parent parent)))
-				'(plain-list item))
-		     (when (eq (org-element-type parent) 'plain-list)
-		       (incf level)))
-		   level))
+	  ;; Determine level of current item to determine the
+	  ;; correct indentation or number of bullets to use.
+	  (let ((parent item) (level 0))
+	    (while (memq (org-element-type
+			  (setq parent (org-export-get-parent parent)))
+			 '(plain-list item))
+	      (when (eq (org-element-type parent) 'plain-list)
+		(incf level)))
+	    level))
 	 (prefix (if (eq org-wk-style 'creole) (if (eq type 'ordered)?# ?*) ? )))
     (concat 
      (if (eq org-wk-style 'doku) (make-string (* 2 level) prefix )
        (make-string (1- level) prefix))
      bullet " "
-	    (case checkbox
-	      (on "[X] ")
-	      (trans "[-] ")
-	      (off "[ ] "))
-	    (and tag (format "**%s:** "(org-export-data tag info)))
-	    (org-trim contents))))
+     (case checkbox
+       (on "[X] ")
+       (trans "[-] ")
+       (off "[ ] "))
+     (and tag (format "**%s:** "(org-export-data tag info)))
+     (org-trim contents))))
 
 ;;;; Line Break
 
@@ -279,7 +280,7 @@ channel."
 ;;;; Link
 
 (defun org-wk-link (link contents info)
-"Transcode a LINK object from Org to HTML.
+  "Transcode a LINK object from Org to HTML.
 
 CONTENTS is the description part of the link, or the empty string.
 INFO is a plist holding contextual information.  See `org-export-data'."
@@ -454,8 +455,8 @@ FIXME : support also row header cells, now headers are in columns only"
   (let ((table-row (org-export-get-parent table-cell)))
     (cond
      ((org-export-table-row-starts-header-p table-row info)
-       (if (eq org-wk-style 'doku)(concat "^ " contents) 
-	 (format "=%s|" contents))) 
+      (if (eq org-wk-style 'doku)(concat "^ " contents) 
+	(format "=%s|" contents))) 
      ((org-export-table-cell-starts-colgroup-p table-cell info)
       (if (eq org-wk-style 'doku) (concat "|" contents "|") 
 	(format "%s|" contents)))
@@ -499,7 +500,7 @@ non-nil."
 	      (org-export-add-to-stack (current-buffer) 'wk)))
 	`(org-export-as 'wk ,subtreep ,visible-only))
     (let ((outbuf (org-export-to-buffer
-		   'wk "*Org Wiki Export*" subtreep visible-only)))
+		      'wk "*Org Wiki Export*" subtreep visible-only)))
       (with-current-buffer outbuf (text-mode))
       (when org-export-show-temporary-export-buffer
 	(switch-to-buffer-other-window outbuf)))))

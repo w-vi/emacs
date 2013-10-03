@@ -65,3 +65,8 @@
 (add-to-list 'load-path "~/src/org-mode/lisp")
 (add-to-list 'load-path "~/src/org-mode/contrib/lisp")
 
+;; ACTION SCRIPT MODE
+(add-to-list 'load-path "~/.emacs.d/site-lisp")
+
+(autoload 'actionscript-mode "actionscript-mode" "Major mode for actionscript." t)
+(add-to-list 'auto-mode-alist '("\\.as$" . actionscript-mode))
