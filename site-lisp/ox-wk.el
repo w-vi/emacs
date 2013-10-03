@@ -57,7 +57,6 @@ This variable can be set to either `monospace' or `verbatim'."
 	  (const :tag "Use \"Monospace\" markup" monospace)
 	  (const :tag "Use \"Verbatim\" markup" verbatim)))
 
-(setq org-wk-style 'creole)
 ;;; Define Back-End
 
 (org-export-define-derived-backend 'wk 'html
