@@ -45,6 +45,10 @@
 (setq org-indent-mode t)
 ;;abbrev and flyspell in org-mode
 (add-hook 'org-mode-hook #'(lambda ()(abbrev-mode t)(flyspell-mode t)))
+(require 'ox-wk)
+(require 'ox-md)
+
+
 
 ;; HIGHLIGHT CURRENT LINE 
 (global-hl-line-mode t)
@@ -65,6 +69,8 @@
 (global-set-key [f4] 'er/expand-region)
 (global-set-key [(control f4)] 'er/contract-region)
 
+;;THING AT POINT EDIT
+(require 'thing-edit)
 
 ;; YASNIPPET
 (require 'yasnippet)
