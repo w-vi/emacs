@@ -108,11 +108,21 @@ c-basic-offset 4)
 ;; C-q go back to mark, ie point where jumped elsewhere
 (global-set-key "\C-q" 'pop-global-mark)
 
+
+;; THING AT POINT EDIT
+(global-set-key "\C-cw" 'thing-copy-word)
+(global-set-key "\C-cW" 'thing-paste-word)
+(global-set-key "\C-cs" 'thing-copy-symbol)
+(global-set-key "\C-cS" 'thing-paste-symbol)
+(global-set-key "\C-cv" 'thing-copy-sentence)
+(global-set-key "\C-cV" 'thing-paste-sentence)
+
+
 ;; HIDE-SHOW
 (global-set-key "\C-ch" 'hs-hide-block) 
 (global-set-key "\C-ce" 'hs-show-block) 
-(global-set-key "\C-c\M-h" 'hs-hide-all) 
-(global-set-key "\C-c\M-e" 'hs-show-all) 
+(global-set-key "\C-cH" 'hs-hide-all) 
+(global-set-key "\C-cE" 'hs-show-all) 
 
 ;; TABBAR
 (global-set-key [f1] 'tabbar-forward)

@@ -32,9 +32,48 @@
 
 (require 'wvi-init)
 
-(add-to-list 'load-path "/usr/share/emacs/site-lisp/lisp/")
-(require 'ess-site)
+(setq cedet-root-path (file-name-as-directory "/usr/share/emacs/site-lisp/cedet/"))
+(load-file (concat cedet-root-path "cedet-devel-load.el"))
+(add-to-list 'load-path (concat cedet-root-path "contrib"))
 
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/ecb")
+(setq-default ecb-tip-of-the-day nil)
+(require 'ecb)
+ 
+;; select which submodes we want to activate
+(add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
+(add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
+(add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode)
+(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
+(add-to-list 'semantic-default-submodes 'global-semantic-highlight-func-mode)
+(add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
+
+(defun wvi-semantic-hook ()
+  (semantic-add-system-include "~/flascc/sdk/usr/include" 'c-mode)
+  (semantic-add-system-include "~/flascc/sdk/usr/include" 'c++-mode))
+(add-hook 'semantic-init-hooks 'wvi-semantic-hook)
+ 
+;; Activate semantic
+(semantic-mode 1)
+
+(require 'semantic/ia)
+(require 'semantic/bovine/gcc) ; or depending on you compiler
+; (require 'semantic/bovine/clang)
+
+(semanticdb-enable-gnu-global-databases 'c-mode t)
+(semanticdb-enable-gnu-global-databases 'c++-mode t)
+ 
+;; SRecode
+(global-srecode-minor-mode 1)
+
+(defun wvi-cedet-hook ()
+    (add-to-list 'ac-sources 'ac-source-semantic)
+)
+
+(add-hook 'c-mode-common-hook 'wvi-cedet-hook)
+(add-hook 'lisp-mode-hook 'alexott/cedet-hook)
+(add-hook 'scheme-mode-hook 'wvi-cedet-hook)
+(add-hook 'emacs-lisp-mode-hook 'wvi-cedet-hook)
 
 ;; ipython path
 (setq python-shell-interpreter "/Library/Frameworks/Python.framework/Versions/2.7/bin/ipython" )
