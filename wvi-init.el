@@ -7,6 +7,9 @@
 (blink-cursor-mode -1) ;; blinking cursor is evil
 (scroll-bar-mode -1) ;; scrollbar is pretty useless
 
+;;Save me buffers and stuff in the rare occasion that I close emacs
+(desktop-save-mode t)
+
 ; don't show the startup screen
 (setq inhibit-startup-screen t)
 
