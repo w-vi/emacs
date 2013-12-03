@@ -9,6 +9,7 @@
 (add-to-list 'load-path "~/emacs/emacs-jedi")
 (add-to-list 'load-path "~/emacs/tabbar")
 (add-to-list 'load-path "~/emacs/expand-region")
+(add-to-list 'load-path "~/emacs/js2-mode")
 
 ;; SHELL MODE ... make it nice
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
@@ -47,7 +48,6 @@
 (add-hook 'org-mode-hook #'(lambda ()(abbrev-mode t)(flyspell-mode t)))
 (require 'ox-wk)
 (require 'ox-md)
-
 
 
 ;; HIGHLIGHT CURRENT LINE 
@@ -103,6 +103,11 @@
 (require 'readline-complete)
 (add-to-list 'ac-modes 'shell-mode)
 (add-hook 'shell-mode-hook 'ac-rlc-setup-sources)
+
+
+;; JAVASCRIPT MODE
+(require 'js2-mode)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
 
 ;; PYTHON
