@@ -72,6 +72,9 @@
 (setq kept-new-versions 20)  ; 2
 ; delete excess backup versions silently
 (setq delete-old-versions t)
+;; AUTOSAVES
+(setq auto-save-file-name-transforms
+          `((".*" "~/.emacs.d/backups/" t)))
 
 ;; ABBREVS-FILE
 (setq abbrev-file-name "~/emacs/abbrev_defs")
