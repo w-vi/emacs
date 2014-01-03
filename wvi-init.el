@@ -82,7 +82,7 @@
 ;; PROGRAMMING STUFF
 ;;C style conventions
 (setq c-default-style "bsd"
-c-basic-offset 4)
+      c-basic-offset 4)
 ;spaces instead of TAB in C/C++ mode
 (setq c-mode-hook (function 
 		   (lambda () (setq indent-tabs-mode nil)
@@ -152,7 +152,7 @@ c-basic-offset 4)
 ; F6 list buffers
 (define-key global-map [f6]  
   (lambda () 
-    (interactive) (list-buffers) (switch-to-buffer-other-frame "*Buffer List*")))
+    (interactive) (list-buffers) (switch-to-buffer-other-window "*Buffer List*")))
 
 ; F7 show bookmarks
 (define-key global-map [f7] 

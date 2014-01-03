@@ -7,7 +7,6 @@
  '(column-number-mode t)
  '(show-paren-mode t)
  '(tabbar-separator (quote (0.5)))
- '(text-mode-hook (quote (text-mode-hook-identify)))
  '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
