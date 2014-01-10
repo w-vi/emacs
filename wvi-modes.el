@@ -18,6 +18,9 @@
 (when (fboundp 'winner-mode)
   (winner-mode t))
 
+;; GO-TO-CHAR
+(require 'iy-go-to-char)
+
 ;;IDO-MODE
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
@@ -50,7 +53,7 @@
 (require 'ox-md)
 
 
-;; HIGHLIGHT CURRENT LINE 
+;; HIGHLIGHT CURRENT LINE
 (global-hl-line-mode t)
 (setq highlight-current-line-globally t)
 (setq highlight-current-line-high-faces nil)
@@ -89,7 +92,7 @@
 ;; AUTOCOMPLETE
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/emacs/ac-dict")
-(setq-default ac-sources '(ac-source-abbrev ac-source-dictionary 
+(setq-default ac-sources '(ac-source-abbrev ac-source-dictionary
 			   ac-source-words-in-same-mode-buffers ))
 (add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)
 (global-auto-complete-mode t)
@@ -125,4 +128,3 @@
    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 (require 'jedi)
 (add-hook 'python-mode-hook 'jedi:ac-setup)
-

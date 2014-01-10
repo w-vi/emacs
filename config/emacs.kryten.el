@@ -54,6 +54,9 @@
 ;;FLYSPELL
 
 
+;;PHP-MODE
+(require 'php-mode)
 ;;GEBEN
 (add-to-list 'load-path "~/emacs/geben")
 (autoload 'geben "geben" "DBGp protocol frontend, a script debugger" t)
+

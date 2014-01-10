@@ -2,7 +2,7 @@
 
 
 ;;; GENERAL SETTINGS
-; to undo, do M-x tool-bar-mode; 
+; to undo, do M-x tool-bar-mode;
 (tool-bar-mode -1)
 (blink-cursor-mode -1) ;; blinking cursor is evil
 (scroll-bar-mode -1) ;; scrollbar is pretty useless
@@ -13,7 +13,7 @@
 ; don't show the startup screen
 (setq inhibit-startup-screen t)
 
-; line and column number in all files, all the time 
+; line and column number in all files, all the time
 ; and please higlight those bloody parenthesis
 (global-linum-mode t)
 (column-number-mode t)
@@ -28,12 +28,12 @@
 (require 'mwheel)
 (mouse-wheel-mode t)
 
-; Bug off with  new frames 
+; Bug off with  new frames
 (setq ns-pop-up-frames nil)
 
 ; Default Emacs does not scroll pages smoothly with down arrow key.
 ; It tries to jump a page-worth.
-; See this for advice on preventing that 
+; See this for advice on preventing that
 ; http://stackoverflow.com/questions/3631220/fix-to-get-smooth-scrolling-in-emacs
 (setq redisplay-dont-pause t)
 (setq scroll-conservatively 20)
@@ -44,7 +44,7 @@
 (global-font-lock-mode t) ; turn on syntax highlight
 (setq text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
 
-;; THEME                                                                     
+;; THEME
 (add-to-list 'custom-theme-load-path "~/emacs/themes/")
 (load-theme 'zenburn t)
 (setq linum-format
@@ -84,10 +84,10 @@
 (setq c-default-style "bsd"
       c-basic-offset 4)
 ;spaces instead of TAB in C/C++ mode
-(setq c-mode-hook (function 
+(setq c-mode-hook (function
 		   (lambda () (setq indent-tabs-mode nil)
 		     (setq c-indent-level 4))))
-(setq c++-mode-hook (function 
+(setq c++-mode-hook (function
 		     (lambda ()(setq indent-tabs-mode nil)
 		       (setq c-indent-level 4))))
 ;.h are most of the C++ files in my case so use that as default
@@ -103,7 +103,7 @@
 (global-set-key "\C-cd" 'duplicate-line)
 ;;C-c c for copy line
 (global-set-key "\C-cc" 'copy-line-or-region)
-;; C-c k for killing the rest of the line 
+;; C-c k for killing the rest of the line
 (global-set-key "\C-ck" 'kill-line)
 ;; C-k for killing the whole line
 (global-set-key "\C-k" 'kill-whole-line)
@@ -115,6 +115,12 @@
 (global-set-key "\C-q" 'pop-global-mark)
 
 
+;;GO TO CHAR
+(global-set-key (kbd "C-c f") 'iy-go-up-to-char)
+(global-set-key (kbd "C-c F") 'iy-go-up-to-char-backward)
+(global-set-key (kbd "C-c ;") 'iy-go-to-or-up-to-continue)
+(global-set-key (kbd "C-c ,") 'iy-go-to-or-up-to-continue-backward)
+
 ;; THING AT POINT EDIT
 (global-set-key "\C-cw" 'thing-copy-word)
 (global-set-key "\C-cW" 'thing-paste-word)
@@ -125,10 +131,10 @@
 
 
 ;; HIDE-SHOW
-(global-set-key "\C-ch" 'hs-hide-block) 
-(global-set-key "\C-ce" 'hs-show-block) 
-(global-set-key "\C-cH" 'hs-hide-all) 
-(global-set-key "\C-cE" 'hs-show-all) 
+(global-set-key "\C-ch" 'hs-hide-block)
+(global-set-key "\C-ce" 'hs-show-block)
+(global-set-key "\C-cH" 'hs-hide-all)
+(global-set-key "\C-cE" 'hs-show-all)
 
 ;; TABBAR
 (global-set-key [f1] 'tabbar-forward)
@@ -150,13 +156,13 @@
   (lambda () (interactive) (dired-other-window default-directory)))
 
 ; F6 list buffers
-(define-key global-map [f6]  
-  (lambda () 
+(define-key global-map [f6]
+  (lambda ()
     (interactive) (list-buffers) (switch-to-buffer-other-window "*Buffer List*")))
 
 ; F7 show bookmarks
-(define-key global-map [f7] 
-  (lambda () 
+(define-key global-map [f7]
+  (lambda ()
     (interactive) (list-bookmarks) (switch-to-buffer-other-window  "*Bookmark List*")))
 
 ;; F8 ?
@@ -169,8 +175,8 @@
 (define-key global-map [f10] (lambda () (interactive) (winner-undo)))
 (define-key global-map [(control f10)] (lambda () (interactive) (winner-redo)))
 
-; F11 undo-tree-undo 
-; C-F11 undo-tree-redo 
+; F11 undo-tree-undo
+; C-F11 undo-tree-redo
 (define-key global-map [f11] (lambda () (interactive) (undo-tree-undo)))
 (define-key global-map [(control f11)] (lambda () (interactive) (undo-tree-redo)))
 
