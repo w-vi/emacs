@@ -50,7 +50,25 @@
 ;;abbrev and flyspell in org-mode
 (add-hook 'org-mode-hook #'(lambda ()(abbrev-mode t)(flyspell-mode t)))
 (require 'ox-wk)
-
+(setq org-export-default-language "en"
+      org-export-html-extension "html"
+      org-export-with-timestamps nil
+      org-export-with-section-numbers nil
+      org-export-with-tags 'not-in-toc
+      org-export-skip-text-before-1st-heading nil
+      org-export-with-sub-superscripts '{}
+      org-export-with-LaTeX-fragments t
+      org-export-with-archived-trees nil
+      org-export-highlight-first-table-line t
+      org-export-latex-listings-w-names nil
+      org-export-html-style-include-default nil
+      org-export-htmlize-output-type 'css
+      org-startup-folded nil
+      org-export-allow-BIND t
+      org-publish-list-skipped-files t
+      org-publish-use-timestamps-flag nil
+      org-export-babel-evaluate nil
+      org-confirm-babel-evaluate nil)
 
 ;; HIGHLIGHT CURRENT LINE
 (global-hl-line-mode t)
@@ -105,6 +123,9 @@
 (require 'readline-complete)
 (add-to-list 'ac-modes 'shell-mode)
 (add-hook 'shell-mode-hook 'ac-rlc-setup-sources)
+
+;; WEB MODE web-mode.org
+(require 'web-mode)
 
 
 ;; JAVASCRIPT MODE
