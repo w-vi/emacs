@@ -18,6 +18,9 @@
 (when (fboundp 'winner-mode)
   (winner-mode t))
 
+;; GO-TO-CHAR
+(require 'iy-go-to-char)
+
 ;;IDO-MODE
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
@@ -47,10 +50,27 @@
 ;;abbrev and flyspell in org-mode
 (add-hook 'org-mode-hook #'(lambda ()(abbrev-mode t)(flyspell-mode t)))
 (require 'ox-wk)
-(require 'ox-md)
+(setq org-export-default-language "en"
+      org-export-html-extension "html"
+      org-export-with-timestamps nil
+      org-export-with-section-numbers nil
+      org-export-with-tags 'not-in-toc
+      org-export-skip-text-before-1st-heading nil
+      org-export-with-sub-superscripts '{}
+      org-export-with-LaTeX-fragments t
+      org-export-with-archived-trees nil
+      org-export-highlight-first-table-line t
+      org-export-latex-listings-w-names nil
+      org-export-html-style-include-default nil
+      org-export-htmlize-output-type 'css
+      org-startup-folded nil
+      org-export-allow-BIND t
+      org-publish-list-skipped-files t
+      org-publish-use-timestamps-flag nil
+      org-export-babel-evaluate nil
+      org-confirm-babel-evaluate nil)
 
-
-;; HIGHLIGHT CURRENT LINE 
+;; HIGHLIGHT CURRENT LINE
 (global-hl-line-mode t)
 (setq highlight-current-line-globally t)
 (setq highlight-current-line-high-faces nil)
@@ -89,7 +109,7 @@
 ;; AUTOCOMPLETE
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/emacs/ac-dict")
-(setq-default ac-sources '(ac-source-abbrev ac-source-dictionary 
+(setq-default ac-sources '(ac-source-abbrev ac-source-dictionary
 			   ac-source-words-in-same-mode-buffers ))
 (add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)
 (global-auto-complete-mode t)
@@ -103,6 +123,9 @@
 (require 'readline-complete)
 (add-to-list 'ac-modes 'shell-mode)
 (add-hook 'shell-mode-hook 'ac-rlc-setup-sources)
+
+;; WEB MODE web-mode.org
+(require 'web-mode)
 
 
 ;; JAVASCRIPT MODE
@@ -125,4 +148,3 @@
    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 (require 'jedi)
 (add-hook 'python-mode-hook 'jedi:ac-setup)
-
