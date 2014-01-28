@@ -3,3 +3,4 @@
 slime/CVS
 slime/contrib/CVS
 slime/doc/CVS
+*.pyc
