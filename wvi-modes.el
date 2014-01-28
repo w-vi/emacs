@@ -70,6 +70,11 @@
       org-export-babel-evaluate nil
       org-confirm-babel-evaluate nil)
 
+;this line activates ditaa
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((ditaa . t))) 
+
 ;; HIGHLIGHT CURRENT LINE
 (global-hl-line-mode t)
 (setq highlight-current-line-globally t)

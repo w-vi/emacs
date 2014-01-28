@@ -60,8 +60,8 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;AUTOBACKUP
-(setq backup-directory-alist
-          '(("." . "~/.emacs.d/backups/")))
+(setq backup-directory-alist 
+      '(("." . "~/.emacs.d/backups/")))
 ; always use copying to create backup files (don't clobber symlinks)
 (setq backup-by-copying t)
 ; make numeric backup versions
@@ -105,6 +105,9 @@
   (c-toggle-auto-hungry-state 1))
 
 (add-hook 'c++-mode-hook 'my-c++-mode-hook)
+
+;.h are most of the C++ files in my case so use that as default
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 (require 'wvi-functions)
 (require 'wvi-modes)
