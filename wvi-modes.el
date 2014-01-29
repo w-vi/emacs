@@ -76,6 +76,7 @@
       org-publish-use-timestamps-flag nil
       org-export-babel-evaluate nil
       org-confirm-babel-evaluate nil)
+
 ;this line activates ditaa
 (org-babel-do-load-languages
  'org-babel-load-languages

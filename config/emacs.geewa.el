@@ -32,10 +32,6 @@
 
 (require 'wvi-init)
 
-(add-to-list 'load-path "/usr/share/emacs/site-lisp/lisp/")
-(require 'ess-site)
-
-
 ;; ipython path
 (setq python-shell-interpreter "/Library/Frameworks/Python.framework/Versions/2.7/bin/ipython" )
 

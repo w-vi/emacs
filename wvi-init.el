@@ -60,18 +60,21 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;AUTOBACKUP
-(setq backup-directory-alist
-          '((".*" . "~/.emacs.d/backups/")))
+(setq backup-directory-alist 
+      '(("." . "~/.emacs.d/backups/")))
 ; always use copying to create backup files (don't clobber symlinks)
 (setq backup-by-copying t)
 ; make numeric backup versions
 (setq version-control t)
 ; number of oldest versions to keep when a new numbered backup is made
-(setq kept-old-versions 0)  ; 2
+(setq kept-old-versions 2)  ; 2
 ; number of newest versions to keep when a new numbered backup is made
 (setq kept-new-versions 20)  ; 2
 ; delete excess backup versions silently
 (setq delete-old-versions t)
+;; Make backups of files, even when they're in version control
+(setq vc-make-backup-files t)
+
 ;; AUTOSAVES
 (setq auto-save-file-name-transforms
           `((".*" "~/.emacs.d/backups/" t)))
@@ -87,9 +90,22 @@
 (setq c-mode-hook (function
 		   (lambda () (setq indent-tabs-mode nil)
 		     (setq c-indent-level 4))))
-(setq c++-mode-hook (function
-		     (lambda ()(setq indent-tabs-mode nil)
-		       (setq c-indent-level 4))))
+
+; style I want to use in c++ mode
+(c-add-style "my-style" 
+	     '("stroustrup"
+	       (indent-tabs-mode . nil)        ; use spaces rather than tabs
+	       (c-basic-offset . 4)            ; indent by four spaces
+	       (c-offsets-alist . ((inline-open . 0)  ; custom indentation rules
+				   (brace-list-open . 0)
+				   (statement-case-open . +)))))
+(defun my-c++-mode-hook ()
+  (c-set-style "my-style")        ; use my-style defined above
+  (auto-fill-mode)         
+  (c-toggle-auto-hungry-state 1))
+
+(add-hook 'c++-mode-hook 'my-c++-mode-hook)
+
 ;.h are most of the C++ files in my case so use that as default
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
@@ -112,7 +128,7 @@
 ;; C-x C-o find the other file, useful for c/c++
 (global-set-key "\C-x\C-o" 'ff-find-other-file)
 ;; C-q go back to mark, ie point where jumped elsewhere
-(global-set-key "\C-q" 'pop-global-mark)
+(global-set-key "\C-cq" 'pop-global-mark)
 
 
 ;;GO TO CHAR
