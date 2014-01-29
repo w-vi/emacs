@@ -11,6 +11,13 @@
 (add-to-list 'load-path "~/emacs/expand-region")
 (add-to-list 'load-path "~/emacs/js2-mode")
 
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
+;; MAGIT from MELPA
+
+
 ;; SHELL MODE ... make it nice
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
