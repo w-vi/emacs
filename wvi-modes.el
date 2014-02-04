@@ -15,9 +15,6 @@
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
-;; MAGIT from MELPA
-
-
 ;; SHELL MODE ... make it nice
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
@@ -138,7 +135,6 @@
 
 ;; WEB MODE web-mode.org
 (require 'web-mode)
-
 
 ;; JAVASCRIPT MODE
 (require 'js2-mode)
