@@ -15,9 +15,6 @@
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
-;; MAGIT from MELPA
-
-
 ;; SHELL MODE ... make it nice
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
@@ -25,8 +22,12 @@
 (when (fboundp 'winner-mode)
   (winner-mode t))
 
-;; GO-TO-CHAR
-(require 'iy-go-to-char)
+;; ACE JUMP MODE
+(autoload 
+  'ace-jump-mode
+  "ace-jump-mode"
+  "Emacs quick move minor mode"   
+  t)
 
 ;;IDO-MODE
 (setq ido-enable-flex-matching t)
@@ -138,7 +139,6 @@
 
 ;; WEB MODE web-mode.org
 (require 'web-mode)
-
 
 ;; JAVASCRIPT MODE
 (require 'js2-mode)

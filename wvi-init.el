@@ -1,6 +1,5 @@
 (provide 'wvi-init)
 
-
 ;;; GENERAL SETTINGS
 ; to undo, do M-x tool-bar-mode;
 (tool-bar-mode -1)
