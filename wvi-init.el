@@ -129,12 +129,8 @@
 ;; C-q go back to mark, ie point where jumped elsewhere
 (global-set-key "\C-cq" 'pop-global-mark)
 
-
-;;GO TO CHAR
-(global-set-key (kbd "C-c f") 'iy-go-up-to-char)
-(global-set-key (kbd "C-c F") 'iy-go-up-to-char-backward)
-(global-set-key (kbd "C-c ;") 'iy-go-to-or-up-to-continue)
-(global-set-key (kbd "C-c ,") 'iy-go-to-or-up-to-continue-backward)
+;;Ace jump mode 
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
 ;; THING AT POINT EDIT
 (global-set-key "\C-cw" 'thing-copy-word)
