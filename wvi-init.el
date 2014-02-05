@@ -129,6 +129,9 @@
 ;; C-q go back to mark, ie point where jumped elsewhere
 (global-set-key "\C-cq" 'pop-global-mark)
 
+(global-set-key (kbd "M-<up>") 'move-line-region-up)
+(global-set-key (kbd "M-<down>") 'move-line-region-down)
+
 ;;Ace jump mode 
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
@@ -139,7 +142,6 @@
 (global-set-key "\C-cS" 'thing-paste-symbol)
 (global-set-key "\C-cv" 'thing-copy-sentence)
 (global-set-key "\C-cV" 'thing-paste-sentence)
-
 
 ;; HIDE-SHOW
 (global-set-key "\C-ch" 'hs-hide-block)
