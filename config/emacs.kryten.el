@@ -48,6 +48,18 @@
 (eval-after-load "auto-complete"
   '(add-to-list 'ac-modes 'slime-repl-mode))
 
+(defun wvi-cedet-hook ()
+  (setq ac-sources (append '(ac-source-semantic) ac-sources))
+  (local-set-key (kbd "RET") 'newline-and-indent)
+  (semantic-mode 1))
+(add-hook 'c-mode-common-hook 'wvi-cedet-hook)
+
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/ecb")
+(setq-default ecb-tip-of-the-day nil)
+(require 'ecb)
+
+(require 'ggtags)
+
 ;; TRAMP
 (require 'tramp)
 
@@ -60,3 +72,8 @@
 (add-to-list 'load-path "~/emacs/geben")
 (autoload 'geben "geben" "DBGp protocol frontend, a script debugger" t)
 
+
+;;BISON/FLEX
+;;;;  these are the lines i use to set up correct auto-ing
+(require 'bison-mode)
+(require 'flex-mode)

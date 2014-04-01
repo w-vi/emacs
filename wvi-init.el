@@ -88,7 +88,9 @@
 ;spaces instead of TAB in C/C++ mode
 (setq c-mode-hook (function
 		   (lambda () (setq indent-tabs-mode nil)
-		     (setq c-indent-level 4))))
+		     (setq c-indent-level 4)
+		     (c-toggle-auto-state 1)
+		     (c-toggle-auto-hungry-state 1))))
 
 ; style I want to use in c++ mode
 (c-add-style "my-style" 
@@ -105,8 +107,8 @@
 
 (add-hook 'c++-mode-hook 'my-c++-mode-hook)
 
-;.h are most of the C++ files in my case so use that as default
-(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+;.h are most of the time C files in my case so use that as default
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c-mode))
 
 (require 'wvi-functions)
 (require 'wvi-modes)

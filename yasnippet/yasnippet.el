@@ -185,7 +185,7 @@ as the default for storing the user's new snippets."
 (defvaralias 'yas/root-directory 'yas-snippet-dirs)
 
 (defcustom yas-new-snippet-default "\
-# -*- mode: snippet -*-
+# -*- mode: snippet; require-final-newline: nil -*-
 # name: $1
 # key: ${2:${1:$(yas--key-from-desc yas-text)}}${3:
 # binding: ${4:direct-keybinding}}${5:
@@ -1489,10 +1489,6 @@ Here's a list of currently recognized directives:
 
 ;;; Popping up for keys and templates
 
-(defvar yas--x-pretty-prompt-templates nil
-  "If non-nil, attempt to prompt for templates like TextMate.")
-
-
 (defun yas--prompt-for-template (templates &optional prompt)
   "Interactively choose a template from the list TEMPLATES.
 
@@ -1504,13 +1500,11 @@ Optional PROMPT sets the prompt to use."
           (sort templates #'(lambda (t1 t2)
                               (< (length (yas--template-name t1))
                                  (length (yas--template-name t2))))))
-    (if yas--x-pretty-prompt-templates
-        (yas--x-pretty-prompt-templates "Choose a snippet" templates)
-      (some #'(lambda (fn)
-                (funcall fn (or prompt "Choose a snippet: ")
-                         templates
-                         #'yas--template-name))
-            yas-prompt-functions))))
+    (some #'(lambda (fn)
+              (funcall fn (or prompt "Choose a snippet: ")
+                       templates
+                       #'yas--template-name))
+          yas-prompt-functions)))
 
 (defun yas--prompt-for-keys (keys &optional prompt)
   "Interactively choose a template key from the list KEYS.
@@ -1534,64 +1528,20 @@ Optional PROMPT sets the prompt to use."
 
 (defun yas-x-prompt (prompt choices &optional display-fn)
   "Display choices in a x-window prompt."
-  ;; FIXME: HACK: if we notice that one of the objects in choices is
-  ;; actually a `yas--template', defer to `yas--x-prompt-pretty-templates'
-  ;;
-  ;; This would be better implemented by passing CHOICES as a
-  ;; structured tree rather than a list. Modifications would go as far
-  ;; up as `yas--all-templates' I think.
-  ;;
   (when (and window-system choices)
-    (let ((chosen
-           (let (menu d) ;; d for display
-             (dolist (c choices)
-               (setq d (or (and display-fn (funcall display-fn c))
-                           c))
-               (cond ((stringp d)
-                      (push (cons (concat "   " d) c) menu))
-                     ((listp d)
-                      (push (car d) menu))))
-             (setq menu (list prompt (push "title" menu)))
-             (x-popup-menu (if (fboundp 'posn-at-point)
-                               (let ((x-y (posn-x-y (posn-at-point (point)))))
-                                 (list (list (+ (car x-y) 10)
-                                             (+ (cdr x-y) 20))
-                                       (selected-window)))
-                             t)
-                           menu))))
-      (or chosen
-          (keyboard-quit)))))
-
-(defun yas--x-pretty-prompt-templates (prompt templates)
-  "Display TEMPLATES, grouping neatly by table name."
-  (let ((organized (make-hash-table :test #'equal))
-        menu
-        more-than-one-table
-        prefix)
-    (dolist (tl templates)
-      (puthash (yas--template-table tl)
-               (cons tl
-                     (gethash (yas--template-table tl) organized))
-               organized))
-    (setq more-than-one-table (> (hash-table-count organized) 1))
-    (setq prefix (if more-than-one-table
-                     "   " ""))
-    (if more-than-one-table
-        (maphash #'(lambda (table templates)
-                     (push (yas--table-name table) menu)
-                     (dolist (tl templates)
-                       (push (cons (concat prefix (yas--template-name tl)) tl) menu))) organized)
-      (setq menu (mapcar #'(lambda (tl) (cons (concat prefix (yas--template-name tl)) tl)) templates)))
-
-    (setq menu (nreverse menu))
-    (or (x-popup-menu (if (fboundp 'posn-at-point)
-                          (let ((x-y (posn-x-y (posn-at-point (point)))))
-                            (list (list (+ (car x-y) 10)
-                                        (+ (cdr x-y) 20))
-                                  (selected-window)))
-                        t)
-                      (list prompt (push "title" menu)))
-        (keyboard-quit))))
+    (or
+     (x-popup-menu
+      (if (fboundp 'posn-at-point)
+          (let ((x-y (posn-x-y (posn-at-point (point)))))
+            (list (list (+ (car x-y) 10)
+                        (+ (cdr x-y) 20))
+                  (selected-window)))
+        t)
+      `(,prompt ("title"
+                 ,@(mapcar* (lambda (c d) `(,(concat "   " d) . ,c))
+                            choices
+                            (if display-fn (mapcar display-fn choices) choices)))))
+     (keyboard-quit))))
 
 (defun yas-ido-prompt (prompt choices &optional display-fn)
   (when (and (fboundp 'ido-completing-read)
@@ -1601,46 +1551,22 @@ Optional PROMPT sets the prompt to use."
 
 (defun yas-dropdown-prompt (_prompt choices &optional display-fn)
   (when (fboundp 'dropdown-list)
-    (let (formatted-choices
-          filtered-choices
-          d
-          n)
-      (dolist (choice choices)
-        (setq d (or (and display-fn (funcall display-fn choice))
-                      choice))
-        (when (stringp d)
-          (push d formatted-choices)
-          (push choice filtered-choices)))
-
-      (setq n (and formatted-choices (dropdown-list formatted-choices)))
-      (if n
-          (nth n filtered-choices)
+    (let* ((formatted-choices
+            (if display-fn (mapcar display-fn choices) choices))
+           (n (dropdown-list formatted-choices)))
+      (if n (nth n choices)
         (keyboard-quit)))))
 
 (defun yas-completing-prompt (prompt choices &optional display-fn completion-fn)
-  (let (formatted-choices
-        filtered-choices
+  (let* ((formatted-choices
+          (if display-fn (mapcar display-fn choices) choices))
+         (chosen (funcall (or completion-fn #'completing-read)
+                          prompt formatted-choices
+                          nil 'require-match nil nil)))
+    (if (eq choices formatted-choices)
         chosen
-        d
-        (completion-fn (or completion-fn
-                           #'completing-read)))
-    (dolist (choice choices)
-      (setq d (or (and display-fn (funcall display-fn choice))
-                    choice))
-      (when (stringp d)
-        (push d formatted-choices)
-        (push choice filtered-choices)))
-    (setq chosen (and formatted-choices
-                      (funcall completion-fn prompt
-                               formatted-choices
-                               nil
-                               'require-match
-                               nil
-                               nil)))
-    (let ((position (or (and chosen
-                             (position chosen formatted-choices :test #'string=))
-                        0)))
-      (nth position filtered-choices))))
+      (nth (or (position chosen formatted-choices :test #'string=) 0)
+           choices))))
 
 (defun yas-no-prompt (_prompt choices &optional _display-fn)
   (first choices))
@@ -2254,8 +2180,8 @@ Prompt the user if TEMPLATES has more than one element, else
 expand immediately.  Common gateway for
 `yas-expand-from-trigger-key' and `yas-expand-from-keymap'."
   (let ((yas--current-template (or (and (rest templates) ;; more than one
-                                       (yas--prompt-for-template (mapcar #'cdr templates)))
-                                  (cdar templates))))
+                                        (yas--prompt-for-template (mapcar #'cdr templates)))
+                                   (cdar templates))))
     (when yas--current-template
       (yas-expand-snippet (yas--template-content yas--current-template)
                           start
@@ -2808,10 +2734,11 @@ If found, the content of subexp group SUBEXP (default 0) is
 The last element of POSSIBILITIES may be a list of strings."
   (unless (or yas-moving-away-p
               yas-modified-p)
-    (setq possibilities (nreverse possibilities))
-    (setq possibilities (if (listp (car possibilities))
-                            (append (reverse (car possibilities)) (rest possibilities))
-                                   possibilities))
+    (let* ((last-link (last possibilities))
+           (last-elem (car last-link)))
+      (when (listp last-elem)
+        (setcar last-link (car last-elem))
+        (setcdr last-link (cdr last-elem))))
     (some #'(lambda (fn)
               (funcall fn "Choose: " possibilities))
           yas-prompt-functions)))
