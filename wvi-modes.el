@@ -29,6 +29,13 @@
   "Emacs quick move minor mode"   
   t)
 
+;; GNU GLOBAL TAGS
+(require 'ggtags)
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+              (ggtags-mode 1))))
+
 ;;IDO-MODE
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
@@ -166,3 +173,4 @@
    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 (require 'jedi)
 (add-hook 'python-mode-hook 'jedi:ac-setup)
+(add-hook 'python-mode-hook 'ggtags-mode)

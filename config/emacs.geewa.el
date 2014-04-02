@@ -32,6 +32,17 @@
 
 (require 'wvi-init)
 
+
+(defun wvi-cedet-hook ()
+  (setq ac-sources (append '(ac-source-semantic) ac-sources))
+  (local-set-key (kbd "RET") 'newline-and-indent)
+  (semantic-mode 1))
+(add-hook 'c-mode-common-hook 'wvi-cedet-hook)
+
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/ecb")
+(setq-default ecb-tip-of-the-day nil)
+(require 'ecb)
+
 ;; ipython path
 (setq python-shell-interpreter "/Library/Frameworks/Python.framework/Versions/2.7/bin/ipython" )
 
