@@ -22,6 +22,8 @@
 ;;Bug off with  new frames 
 (setq ns-pop-up-frames nil)
 
+(setq shell-command-switch "-ic")
+
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/org")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -22,19 +22,23 @@
 (when (fboundp 'winner-mode)
   (winner-mode t))
 
+;;GGTAGS
+(autoload 
+  'ggtags-mode
+  "ggtags"
+  "Emacs gnu global tags minor mode"
+  t)
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+              (ggtags-mode 1))))
+
 ;; ACE JUMP MODE
 (autoload 
   'ace-jump-mode
   "ace-jump-mode"
   "Emacs quick move minor mode"   
   t)
-
-;; GNU GLOBAL TAGS
-(require 'ggtags)
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-              (ggtags-mode 1))))
 
 ;;IDO-MODE
 (setq ido-enable-flex-matching t)
