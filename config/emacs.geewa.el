@@ -22,6 +22,8 @@
 ;;Bug off with  new frames 
 (setq ns-pop-up-frames nil)
 
+(setq shell-command-switch "-ic")
+
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/org")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -32,8 +34,19 @@
 
 (require 'wvi-init)
 
+
+(defun wvi-cedet-hook ()
+  (setq ac-sources (append '(ac-source-semantic) ac-sources))
+  (local-set-key (kbd "RET") 'newline-and-indent)
+  (semantic-mode 1))
+(add-hook 'c-mode-common-hook 'wvi-cedet-hook)
+
 ;; ipython path
 (setq python-shell-interpreter "/Library/Frameworks/Python.framework/Versions/2.7/bin/ipython" )
+
+;; TRAMP
+(require 'tramp)
+(setq tramp-default-method "ssh")
 
 ;; Agenda files on this machine
 (setq org-agenda-files (append "~/geewa/notification/todo.org"))

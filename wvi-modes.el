@@ -22,6 +22,17 @@
 (when (fboundp 'winner-mode)
   (winner-mode t))
 
+;;GGTAGS
+(autoload 
+  'ggtags-mode
+  "ggtags"
+  "Emacs gnu global tags minor mode"
+  t)
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+              (ggtags-mode 1))))
+
 ;; ACE JUMP MODE
 (autoload 
   'ace-jump-mode
@@ -166,3 +177,4 @@
    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 (require 'jedi)
 (add-hook 'python-mode-hook 'jedi:ac-setup)
+(add-hook 'python-mode-hook 'ggtags-mode)

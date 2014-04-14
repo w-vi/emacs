@@ -122,8 +122,7 @@
 
 ;; KEY BINDINGS
 
-;; C-c C-d for line duplication
-(global-set-key "\C-c\C-d" 'duplicate-line)
+;; C-c d for line duplication
 (global-set-key "\C-cd" 'duplicate-line)
 ;;C-c c for copy line
 (global-set-key "\C-cc" 'copy-line-or-region)
@@ -143,6 +142,11 @@
 
 ;;Ace jump mode 
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+
+;; Doc mode 
+(global-set-key "\C-c\C-f" 'doc-mode-fix-tag-doc)
+(global-set-key "\C-c\C-r" 'doc-mode-remove-tag-doc)
+(global-set-key "\C-c\C-t" 'doc-mode-toggle-tag-doc-folding)
 
 ;; THING AT POINT EDIT
 (global-set-key "\C-cw" 'thing-copy-word)
