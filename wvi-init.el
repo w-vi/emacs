@@ -106,9 +106,16 @@
   (c-toggle-auto-hungry-state 1))
 
 (add-hook 'c++-mode-hook 'my-c++-mode-hook)
-
 ;.h are most of the time C files in my case so use that as default
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c-mode))
+
+; add man pages refernce on [C-h d] key
+(dolist (hook '(c-mode-hook c++-mode-hook))
+  (add-hook hook 
+	    (lambda ()(local-set-key (kbd "C-h d")
+				     (lambda ()
+				       (interactive)
+				       (manual-entry (current-word)))))))
 
 (require 'wvi-functions)
 (require 'wvi-modes)

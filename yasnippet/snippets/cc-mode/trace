@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: trace
+# key: TRACE
+# --
+TRACE($1, "$0", "");
