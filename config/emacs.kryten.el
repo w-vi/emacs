@@ -58,8 +58,6 @@
 (setq-default ecb-tip-of-the-day nil)
 (require 'ecb)
 
-(require 'ggtags)
-
 ;; TRAMP
 (require 'tramp)
 

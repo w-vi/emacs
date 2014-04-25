@@ -98,7 +98,7 @@
                (let ((split-height-threshold nil))
                  (split-window-sensibly window))
             (split-window-sensibly window)))
-(setq split-window-preferred-function 'split-window-prefer-horizonally)
+;;(setq split-window-preferred-function 'split-window-prefer-horizonally)
 
 
 ;; Never understood why Emacs doesn't have this function.

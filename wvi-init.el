@@ -130,8 +130,6 @@
 (global-set-key "\C-ck" 'kill-line)
 ;; C-k for killing the whole line
 (global-set-key "\C-k" 'kill-whole-line)
-;; <Super>TAB for switching windows
-(global-set-key (kbd "s-s") 'other-window)
 ;; C-x C-o find the other file, useful for c/c++
 (global-set-key "\C-x\C-o" 'ff-find-other-file)
 ;; C-q go back to mark, ie point where jumped elsewhere
@@ -140,13 +138,14 @@
 (global-set-key (kbd "M-<up>") 'move-line-region-up)
 (global-set-key (kbd "M-<down>") 'move-line-region-down)
 
+;; Move between windows
+(global-set-key [s-left] 'windmove-left) 
+(global-set-key [s-right] 'windmove-right) 
+(global-set-key [s-up] 'windmove-up) 
+(global-set-key [s-down] 'windmove-down)
+
 ;;Ace jump mode 
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
-
-;; Doc mode 
-(global-set-key "\C-c\C-f" 'doc-mode-fix-tag-doc)
-(global-set-key "\C-c\C-r" 'doc-mode-remove-tag-doc)
-(global-set-key "\C-c\C-t" 'doc-mode-toggle-tag-doc-folding)
 
 ;; THING AT POINT EDIT
 (global-set-key "\C-cw" 'thing-copy-word)
