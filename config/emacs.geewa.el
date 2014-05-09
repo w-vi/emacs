@@ -41,6 +41,9 @@
   (semantic-mode 1))
 (add-hook 'c-mode-common-hook 'wvi-cedet-hook)
 
+(setq load-path (cons "~/src/python/py3gyp/tools/emacs" load-path))
+(require 'gyp)
+
 ;; ipython path
 (setq python-shell-interpreter "/Library/Frameworks/Python.framework/Versions/2.7/bin/ipython" )
 
