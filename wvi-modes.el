@@ -116,6 +116,9 @@
 ;;THING AT POINT EDIT
 (require 'thing-edit)
 
+;; HIGHLIGHT INDENT
+(require 'highlight-indentation)
+
 ;; YASNIPPET
 (require 'yasnippet)
 (setq yas-trigger-key nil)
@@ -147,6 +150,46 @@
 (require 'readline-complete)
 (add-to-list 'ac-modes 'shell-mode)
 (add-hook 'shell-mode-hook 'ac-rlc-setup-sources)
+
+
+;; PROGRAMMING STUFF
+;;C style conventions
+(setq c-default-style "bsd"
+      c-basic-offset 4)
+;spaces instead of TAB in C/C++ mode
+(setq c-mode-hook (function
+		   (lambda () (setq indent-tabs-mode nil)
+		     (setq c-indent-level 4)
+		     (c-toggle-auto-state 1)
+		     (c-toggle-auto-hungry-state 1))))
+
+; style I want to use in c++ mode
+(c-add-style "my-style" 
+	     '("stroustrup"
+	       (indent-tabs-mode . nil)        ; use spaces rather than tabs
+	       (c-basic-offset . 4)            ; indent by four spaces
+	       (c-offsets-alist . ((inline-open . 0)  ; custom indentation rules
+				   (brace-list-open . 0)
+				   (statement-case-open . +)))))
+(defun my-c++-mode-hook ()
+  (c-set-style "my-style")        ; use my-style defined above
+  (auto-fill-mode)         
+  (c-toggle-auto-hungry-state 1))
+
+(add-hook 'c++-mode-hook 'my-c++-mode-hook)
+;.h are most of the time C files in my case so use that as default
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c-mode))
+
+; add man pages refernce on [C-h d] key
+(dolist (hook '(c-mode-hook c++-mode-hook))
+  (add-hook hook 
+	    (lambda ()(local-set-key (kbd "C-h d")
+				     (lambda ()
+				       (interactive)
+				       (manual-entry (current-word)))))))
+
+;; GO-LANG
+(require 'go-mode-load)
 
 ;; WEB MODE web-mode.org
 (require 'web-mode)
