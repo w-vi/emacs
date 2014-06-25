@@ -207,6 +207,7 @@
 
 ;; PYTHON
 ;;set ipython as default python shell
+(add-hook 'python-mode-hook '(lambda () (setq python-indent 4)))
 (setq
  python-shell-interpreter "ipython"
  python-shell-interpreter-args ""
