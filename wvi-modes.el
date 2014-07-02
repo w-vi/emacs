@@ -28,10 +28,6 @@
   "ggtags"
   "Emacs gnu global tags minor mode"
   t)
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-              (ggtags-mode 1))))
 
 ;; ACE JUMP MODE
 (autoload 
@@ -58,10 +54,10 @@
 (tabbar-mode)
 
 ;; HIDE/SHOW
-(add-hook 'c-mode-common-hook #'(lambda () (hs-minor-mode)))
-(add-hook 'python-mode-hook #'(lambda () (hs-minor-mode)))
-(add-hook 'lisp-mode-hook #'(lambda () (hs-minor-mode)))
-(add-hook 'emacs-lisp-mode-hook #'(lambda () (hs-minor-mode)))
+;;(add-hook 'c-mode-common-hook #'(lambda () (hs-minor-mode)))
+;;(add-hook 'python-mode-hook #'(lambda () (hs-minor-mode)))
+;;(add-hook 'lisp-mode-hook #'(lambda () (hs-minor-mode)))
+;;(add-hook 'emacs-lisp-mode-hook #'(lambda () (hs-minor-mode)))
 
 ;;ORG-MODE
 (require 'org)
@@ -126,9 +122,9 @@
 ;; This is where your snippets will lie.
 (setq yas-snippet-dirs '("~/emacs/yasnippet/snippets"))
 (mapc 'yas-load-directory yas-snippet-dirs)
-(add-hook 'c-mode-common-hook #'(lambda () (yas-minor-mode)))
-(add-hook 'emacs-lisp-mode-hook #'(lambda () (yas-minor-mode)))
-(add-hook 'python-mode-hook #'(lambda () (yas-minor-mode)))
+;;(add-hook 'c-mode-common-hook #'(lambda () (yas-minor-mode)))
+;;(add-hook 'emacs-lisp-mode-hook #'(lambda () (yas-minor-mode)))
+;;(add-hook 'python-mode-hook #'(lambda () (yas-minor-mode)))
 (add-hook 'org-mode-hook #'(lambda () (yas-minor-mode)))
 (global-set-key [(control f2)] 'yas-insert-snippet)
 (global-set-key [f2] 'yas-expand)
@@ -137,7 +133,7 @@
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/emacs/ac-dict")
 (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary
-			   ac-source-words-in-same-mode-buffers ))
+                           ac-source-words-in-same-mode-buffers ))
 (add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)
 (global-auto-complete-mode t)
 (ac-set-trigger-key "TAB")
@@ -158,19 +154,19 @@
       c-basic-offset 4)
 ;spaces instead of TAB in C/C++ mode
 (setq c-mode-hook (function
-		   (lambda () (setq indent-tabs-mode nil)
-		     (setq c-indent-level 4)
-		     (c-toggle-auto-state 1)
-		     (c-toggle-auto-hungry-state 1))))
+                   (lambda () (setq indent-tabs-mode nil)
+                     (setq c-indent-level 4)
+                     (c-toggle-auto-state 1)
+                     (c-toggle-auto-hungry-state 1))))
 
 ; style I want to use in c++ mode
 (c-add-style "my-style" 
-	     '("stroustrup"
-	       (indent-tabs-mode . nil)        ; use spaces rather than tabs
-	       (c-basic-offset . 4)            ; indent by four spaces
-	       (c-offsets-alist . ((inline-open . 0)  ; custom indentation rules
-				   (brace-list-open . 0)
-				   (statement-case-open . +)))))
+             '("stroustrup"
+               (indent-tabs-mode . nil)        ; use spaces rather than tabs
+               (c-basic-offset . 4)            ; indent by four spaces
+               (c-offsets-alist . ((inline-open . 0)  ; custom indentation rules
+                                   (brace-list-open . 0)
+                                   (statement-case-open . +)))))
 (defun my-c++-mode-hook ()
   (c-set-style "my-style")        ; use my-style defined above
   (auto-fill-mode)         
@@ -179,31 +175,44 @@
 (add-hook 'c++-mode-hook 'my-c++-mode-hook)
 ;.h are most of the time C files in my case so use that as default
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c-mode))
+(add-hook 'c-mode-common-hook 'progmodes-hooks)
 
 ; add man pages refernce on [C-h d] key
 (dolist (hook '(c-mode-hook c++-mode-hook))
   (add-hook hook 
-	    (lambda ()(local-set-key (kbd "C-h d")
-				     (lambda ()
-				       (interactive)
-				       (manual-entry (current-word)))))))
+            (lambda ()(local-set-key (kbd "C-h d")
+                                     (lambda ()
+                                       (interactive)
+                                       (manual-entry (current-word)))))))
 
 ;; GO-LANG
 (require 'go-mode-load)
+(add-hook 'go-mode-hook 
+  (lambda ()
+    (setq-default) 
+    (setq tab-width 4) 
+    (setq standard-indent 4) 
+    (setq indent-tabs-mode nil)
+    (add-hook 'before-save-hook 'gofmt-before-save)))
+(add-hook 'go-mode-hook 'progmodes-hooks)
+(require 'go-autocomplete)
+
 
 ;; WEB MODE web-mode.org
 (require 'web-mode)
+(add-hook 'web-mode-hook 'progmodes-hooks)
+
 
 ;; JAVASCRIPT MODE
 (autoload 'js2-mode "js2-mode")
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-hook 'js2-mode-hook 'progmodes-hooks)
 
 ;;MARKDOWN MODE
 (autoload 'markdown-mode "markdown-mode"
    "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-
 
 ;; PYTHON
 ;;set ipython as default python shell
@@ -220,4 +229,4 @@
    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 (require 'jedi)
 (add-hook 'python-mode-hook 'jedi:ac-setup)
-(add-hook 'python-mode-hook 'ggtags-mode)
+(add-hook 'python-mode-hook 'progmodes-hooks)

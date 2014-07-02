@@ -1,5 +1,39 @@
 (provide 'wvi-functions)
 
+(defun untabify-buffer ()
+  "Untabify current buffer"
+  (interactive)
+  (untabify (point-min) (point-max)))
+
+(defun progmodes-hooks ()
+  "Hooks for programming modes"
+  (ggtags-mode 1)
+  (yas-minor-mode-on)
+  (hs-minor-mode)
+  (add-hook 'before-save-hook 'progmodes-write-hooks))
+
+(defun progmodes-write-hooks ()
+  "Hooks which run on file write for programming modes"
+  (prog1 nil
+    (set-buffer-file-coding-system 'utf-8-unix)
+    (untabify-buffer)
+    (copyright-update)
+    (maybe-delete-trailing-whitespace)))
+
+(defun delete-trailing-whitespacep ()
+  "Should we delete trailing whitespace when saving this file?"
+  (save-excursion
+    (goto-char (point-min))
+    (ignore-errors (next-line 25))
+    (let ((pos (point)))
+      (goto-char (point-min))
+      (and (re-search-forward (concat "@author +" user-full-name) pos t) t))))
+
+(defun maybe-delete-trailing-whitespace ()
+  "Delete trailing whitespace if I am the author of this file."
+  (interactive)
+  (and (delete-trailing-whitespacep) (delete-trailing-whitespace)))
+
 (defun move-region (start end n)
   "Move the current region up or down by N lines."
   (interactive "r\np")
@@ -57,20 +91,16 @@
 (defun duplicate-line (arg)
   "Duplicate current line, leaving point in lower line."
   (interactive "*p")
-
   ;; save the point for undo
   (setq buffer-undo-list (cons (point) buffer-undo-list))
-
   ;; local variables for start and end of line
   (let ((bol (save-excursion (beginning-of-line) (point)))
 	eol)
     (save-excursion
-
       ;; don't use forward-line for this, because you would have
       ;; to check whether you are at the end of the buffer
       (end-of-line)
       (setq eol (point))
-
       ;; store the line and disable the recording of undo information
       (let ((line (buffer-substring bol eol))
 	    (buffer-undo-list t)
@@ -81,11 +111,9 @@
 	  (insert line)
 	  (setq count (1- count)))
 	)
-
       ;; create the undo information
       (setq buffer-undo-list (cons (cons eol (point)) buffer-undo-list)))
     ) ; end-of-let
-
   ;; put the point in the lowest line and return
   (next-line arg))
 
