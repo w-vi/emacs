@@ -95,7 +95,7 @@
   (setq buffer-undo-list (cons (point) buffer-undo-list))
   ;; local variables for start and end of line
   (let ((bol (save-excursion (beginning-of-line) (point)))
-	eol)
+        eol)
     (save-excursion
       ;; don't use forward-line for this, because you would have
       ;; to check whether you are at the end of the buffer
@@ -103,14 +103,14 @@
       (setq eol (point))
       ;; store the line and disable the recording of undo information
       (let ((line (buffer-substring bol eol))
-	    (buffer-undo-list t)
-	    (count arg))
-	;; insert the line arg times
-	(while (> count 0)
-	  (newline) ;; because there is no newline in 'line'
-	  (insert line)
-	  (setq count (1- count)))
-	)
+            (buffer-undo-list t)
+            (count arg))
+        ;; insert the line arg times
+        (while (> count 0)
+          (newline) ;; because there is no newline in 'line'
+          (insert line)
+          (setq count (1- count)))
+        )
       ;; create the undo information
       (setq buffer-undo-list (cons (cons eol (point)) buffer-undo-list)))
     ) ; end-of-let
@@ -133,33 +133,33 @@
 (defun rename-file-and-buffer (new-name)
   "Renames both current buffer and file it's visiting to NEW-NAME." (interactive "sNew name: ")
   (let ((name (buffer-name))
-	(filename (buffer-file-name)))
+        (filename (buffer-file-name)))
     (if (not filename)
-	(message "Buffer '%s' is not visiting a file!" name)
+        (message "Buffer '%s' is not visiting a file!" name)
       (if (get-buffer new-name)
-	  (message "A buffer named '%s' already exists!" new-name)
-	(progn (rename-file name new-name 1) 	 
-	       (rename-buffer new-name)
-	       (set-visited-file-name new-name)
-	       (set-buffer-modified-p nil)))))) 
+          (message "A buffer named '%s' already exists!" new-name)
+        (progn (rename-file name new-name 1)     
+               (rename-buffer new-name)
+               (set-visited-file-name new-name)
+               (set-buffer-modified-p nil)))))) 
 
 ;; Never understood why Emacs doesn't have this function, either.
 (defun move-buffer-file (dir)
   "Moves both current buffer and file it's visiting to DIR." (interactive "DNew directory: ")
   (let* ((name (buffer-name))
-	 (filename (buffer-file-name))
-	 (dir
-	  (if (string-match dir "\\(?:/\\|\\\\)$")
-	      (substring dir 0 -1) dir))
-	 (newname (concat dir "/" name)))
+         (filename (buffer-file-name))
+         (dir
+          (if (string-match dir "\\(?:/\\|\\\\)$")
+              (substring dir 0 -1) dir))
+         (newname (concat dir "/" name)))
 
     (if (not filename)
-	(message "Buffer '%s' is not visiting a file!" name)
+        (message "Buffer '%s' is not visiting a file!" name)
       (progn (copy-file filename newname 1)
-	     (delete-file filename)
-	     (set-visited-file-name newname)
-	     (set-buffer-modified-p nil)  
-	     t))))
+             (delete-file filename)
+             (set-visited-file-name newname)
+             (set-buffer-modified-p nil)  
+             t))))
 
 (defun copy-line-or-region ()
   "Copy current line, or current text selection."
@@ -182,3 +182,42 @@
   (dired-next-line -1))
 (define-key dired-mode-map
   (vector 'remap 'end-of-buffer) 'dired-jump-to-bottom)
+
+
+
+;;;; GO Specific stuff
+
+(defvar hook-go-pkg nil
+  "History variable for `go-install-package' and `go-test-package'.")
+
+(defun go-build ()
+  "build current buffer"
+  (interactive)
+  (compile (concat "go build  \"" (buffer-file-name) "\"")))
+
+(defun go-build-dir ()
+  "build current directory"
+  (interactive)
+  (compile "go build ."))
+
+(defun go-fix-buffer ()
+  "run gofix on current buffer"
+  (interactive)
+  (show-all)
+  (shell-command-on-region (point-min) (point-max) "go tool fix -diff"))
+
+(defun go-install-package ()
+  "install package"
+  (interactive)
+  (let
+      ((pkg (read-from-minibuffer "Install package: " nil nil nil 'hook-go-pkg)))
+    (if (not (string= pkg ""))
+        (compile (concat "go install \"" pkg "\"")))))
+
+(defun go-test-package ()
+  "test package"
+  (interactive)
+  (let
+      ((pkg (read-from-minibuffer "Test package: " nil nil nil 'hook-go-pkg)))
+    (if (not (string= pkg ""))
+        (compile (concat "go test \"" pkg "\"")))))

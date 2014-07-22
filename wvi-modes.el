@@ -129,6 +129,9 @@
 (global-set-key [(control f2)] 'yas-insert-snippet)
 (global-set-key [f2] 'yas-expand)
 
+(add-hook 'emacs-lisp-mode-hook 'progmodes-hooks)
+
+
 ;; AUTOCOMPLETE
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/emacs/ac-dict")
@@ -193,6 +196,10 @@
     (setq tab-width 4) 
     (setq standard-indent 4) 
     (setq indent-tabs-mode nil)
+    (setq show-trailing-whitespace t)
+    (if (not (string-match "go" compile-command))
+        (set (make-local-variable 'compile-command)
+             "go build -v && go test -v && go vet"))
     (add-hook 'before-save-hook 'gofmt-before-save)))
 (add-hook 'go-mode-hook 'progmodes-hooks)
 (require 'go-autocomplete)
