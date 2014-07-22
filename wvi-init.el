@@ -2,9 +2,10 @@
 
 ;;; GENERAL SETTINGS
 ; to undo, do M-x tool-bar-mode;
-(tool-bar-mode -1)
-(blink-cursor-mode -1) ;; blinking cursor is evil
-(scroll-bar-mode -1) ;; scrollbar is pretty useless
+(when window-system
+  (tool-bar-mode -1)
+  (blink-cursor-mode -1) ;; blinking cursor is evil
+  (scroll-bar-mode -1)) ;; scrollbar is pretty useless
 
 ;;Save me buffers and stuff in the rare occasion that I close emacs
 (desktop-save-mode t)
@@ -48,12 +49,12 @@
 (load-theme 'zenburn t)
 (setq linum-format
       (lambda (line)
-	(propertize (format
-		     (let ((w (length (number-to-string
-				       (count-lines (point-min) (point-max))))))
-		       (concat " %" (number-to-string w) "d"))
-		     line)
-		    'face 'linum)))
+        (propertize (format
+                     (let ((w (length (number-to-string
+                                       (count-lines (point-min) (point-max))))))
+                       (concat " %" (number-to-string w) "d"))
+                     line)
+                    'face 'linum)))
 
 ;; ALIASES
 (defalias 'yes-or-no-p 'y-or-n-p)

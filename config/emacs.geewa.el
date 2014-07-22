@@ -34,12 +34,33 @@
 
 (require 'wvi-init)
 
+;; on OSX I want to have same path as in shell
+(require 'exec-path-from-shell)
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
 
-(defun wvi-cedet-hook ()
-  (setq ac-sources (append '(ac-source-semantic) ac-sources))
-  (local-set-key (kbd "RET") 'newline-and-indent)
-  (semantic-mode 1))
-(add-hook 'c-mode-common-hook 'wvi-cedet-hook)
+;; clang auto-complete
+(require 'auto-complete-clang)
+
+(defun ac-cc-mode-setup ()
+  (setq ac-sources '(ac-source-clang ac-source-yasnippet))
+)
+(setq ac-clang-flags
+        (mapcar (lambda (item)(concat "-I " item))
+                (split-string
+                 "
+ /Users/wvi/src/gclx/gclx/include/
+ /Users/wvi/src/gclx/gclx/src/
+ /Users/wvi/src/gclx/gcln/include/
+ /Users/wvi/src/gclx/gcln/src/
+ /Users/wvi/src/gclx/external/libuv/include/
+ /Users/wvi/src/gclx/external/zlib/
+ /Users/wvi/src/gclx/gclp/include/
+"
+                 )))
+(setq ac-clang-flags (append '("-DGCLX_NATIVE") ac-clang-flags))
+(add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
+
 
 (setq load-path (cons "~/src/python/py3gyp/tools/emacs" load-path))
 (require 'gyp)
@@ -61,10 +82,10 @@
 (setq ispell-really-aspell  t)
 (setq ispell-dictionary-alist
       '((nil
-	 "[A-Za-z]" "[^A-Za-z]" "[']" nil
-	 ("-B" "-d" "english" "--dict-dir"
-	  "/Library/Application Support/cocoAspell/aspell6-en-6.0-0")
-	 nil iso-8859-1)))
+         "[A-Za-z]" "[^A-Za-z]" "[']" nil
+         ("-B" "-d" "english" "--dict-dir"
+          "/Library/Application Support/cocoAspell/aspell6-en-6.0-0")
+         nil iso-8859-1)))
 
 (global-set-key (kbd "<f12>") 'ispell-word)
 (global-set-key (kbd "C-S-<f12>") 'flyspell-mode)
@@ -86,3 +107,4 @@
 
 (autoload 'actionscript-mode "actionscript-mode" "Major mode for actionscript." t)
 (add-to-list 'auto-mode-alist '("\\.as$" . actionscript-mode))
+
