@@ -40,12 +40,12 @@
   (exec-path-from-shell-initialize))
 
 ;; clang auto-complete
-(require 'auto-complete-clang)
+(require 'auto-complete-clang-async)
 
 (defun ac-cc-mode-setup ()
-  (setq ac-sources '(ac-source-clang ac-source-yasnippet))
-)
-(setq ac-clang-flags
+  (setq ac-sources '(ac-source-clang-async ac-source-yasnippet ac-source-words-in-same-mode-buffers ac-source-gtags))
+  (ac-clang-launch-completion-process)
+  (setq ac-clang-flags
         (mapcar (lambda (item)(concat "-I " item))
                 (split-string
                  "
@@ -58,9 +58,9 @@
  /Users/wvi/src/gclx/gclp/include/
 "
                  )))
-(setq ac-clang-flags (append '("-DGCLX_NATIVE") ac-clang-flags))
+  (setq ac-clang-flags (append '("-DGCLX_NATIVE") ac-clang-flags))
+  (ac-clang-launch-completion-process))
 (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
-
 
 (setq load-path (cons "~/src/python/py3gyp/tools/emacs" load-path))
 (require 'gyp)
