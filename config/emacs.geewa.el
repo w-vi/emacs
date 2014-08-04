@@ -44,7 +44,6 @@
 
 (defun ac-cc-mode-setup ()
   (setq ac-sources '(ac-source-clang-async ac-source-yasnippet ac-source-words-in-same-mode-buffers ac-source-gtags))
-  (ac-clang-launch-completion-process)
   (setq ac-clang-flags
         (mapcar (lambda (item)(concat "-I " item))
                 (split-string
