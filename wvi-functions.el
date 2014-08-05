@@ -167,9 +167,9 @@
          (newpath (concat dir "/" filename)))
     (if (file-exists-p newpath)
         (progn (message "File '%s' already exists ... opening '%s'", newpath, filename)
-               (find-file-noselect newpath))
+               (switch-to-buffer (find-file-noselect newpath)))
       (progn (write-region "" "" newpath)
-             (find-file-noselect newpath)))
+             (switch-to-buffer (find-file-noselect newpath))))
     ))
 
 (defun copy-line-or-region ()
