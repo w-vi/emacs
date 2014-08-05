@@ -1,3 +1,4 @@
+;;@author wvi
 (provide 'wvi-functions)
 
 (defun untabify-buffer ()
@@ -20,19 +21,19 @@
     (copyright-update)
     (maybe-delete-trailing-whitespace)))
 
-(defun delete-trailing-whitespacep ()
+(defun delete-trailing-whitespace-p ()
   "Should we delete trailing whitespace when saving this file?"
   (save-excursion
     (goto-char (point-min))
     (ignore-errors (next-line 25))
     (let ((pos (point)))
       (goto-char (point-min))
-      (and (re-search-forward (concat "@author +" user-full-name) pos t) t))))
+      (and (re-search-forward (concat "@author wvi") pos t) t))))
 
 (defun maybe-delete-trailing-whitespace ()
   "Delete trailing whitespace if I am the author of this file."
   (interactive)
-  (and (delete-trailing-whitespacep) (delete-trailing-whitespace)))
+  (and (delete-trailing-whitespace-p) (delete-trailing-whitespace)))
 
 (defun move-region (start end n)
   "Move the current region up or down by N lines."
@@ -138,10 +139,10 @@
         (message "Buffer '%s' is not visiting a file!" name)
       (if (get-buffer new-name)
           (message "A buffer named '%s' already exists!" new-name)
-        (progn (rename-file name new-name 1)     
+        (progn (rename-file name new-name 1)
                (rename-buffer new-name)
                (set-visited-file-name new-name)
-               (set-buffer-modified-p nil)))))) 
+               (set-buffer-modified-p nil))))))
 
 ;; Never understood why Emacs doesn't have this function, either.
 (defun move-buffer-file (dir)
@@ -158,7 +159,7 @@
       (progn (copy-file filename newname 1)
              (delete-file filename)
              (set-visited-file-name newname)
-             (set-buffer-modified-p nil)  
+             (set-buffer-modified-p nil)
              t))))
 
 (defun wvi-create-file-buffer (filename)
