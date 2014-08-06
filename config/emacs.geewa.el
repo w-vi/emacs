@@ -40,6 +40,10 @@
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 
+(when (not window-system)
+  (global-set-key [(control h)] 'delete-backward-char)
+  (global-set-key [(hyper h)] 'help-command))
+
 ;; clang auto-complete
 (require 'auto-complete-clang-async)
 

@@ -156,7 +156,7 @@
     (interactive) (list-bookmarks) (switch-to-buffer "*Bookmark List*")))
 
 ;; F8 new file buffer
-(define-key global-map [f8] 'wvi-create-file-buffer))
+(define-key global-map [f8] 'wvi-create-file-buffer)
 
 ; F9 to kill buffer
 (define-key global-map [f9] (lambda () (interactive) (kill-buffer (current-buffer))))
