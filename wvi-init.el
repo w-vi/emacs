@@ -126,6 +126,12 @@
 (global-set-key "\C-cH" 'hs-hide-all)
 (global-set-key "\C-cE" 'hs-show-all)
 
+
+;;SUNRISE COMMANDER
+(global-set-key "\C-cx" 'sunrise)
+(global-set-key "\C-cX" 'sunrise-cd)
+
+
 ;; TABBAR
 (global-set-key [f1] 'tabbar-forward)
 (global-set-key [(control f1)] 'tabbar-backward)
@@ -168,4 +174,4 @@
 (define-key global-map [f11] (lambda () (interactive) (undo-tree-undo)))
 (define-key global-map [(control f11)] (lambda () (interactive) (undo-tree-redo)))
 
-; F12 ?
+; F12 kryten free, geewa ispell
