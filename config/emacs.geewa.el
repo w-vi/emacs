@@ -1,26 +1,26 @@
 ;;@author wvi
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
-;; Startup and Behavior Controls 
+;;
+;; Startup and Behavior Controls
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'cl)
 
-(setq load-path (cons "~/emacs" load-path)) 
+(setq load-path (cons "~/emacs" load-path))
 
 (setq custom-file "~/emacs/custom-geewa.el")
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
+;;
 ;; Machine Specific Configuration Section
-;; 
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (set-default-font "Menlo")
 
-;;Bug off with  new frames 
+;;Bug off with  new frames
 (setq ns-pop-up-frames nil)
 
 (setq shell-command-switch "-ic")
@@ -28,12 +28,16 @@
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/org")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
+;;
 ;; Load the real init
-;; 
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'wvi-init)
+
+;; OSX ls doesn't support same stuff as gnu ls
+(setq insert-directory-program "/opt/local/bin/gls")
+;;(setq dired-listing-switches "-aBhl --group-directories-first")
 
 ;; on OSX I want to have same path as in shell
 (require 'exec-path-from-shell)
@@ -111,4 +115,3 @@
 
 (autoload 'actionscript-mode "actionscript-mode" "Major mode for actionscript." t)
 (add-to-list 'auto-mode-alist '("\\.as$" . actionscript-mode))
-
