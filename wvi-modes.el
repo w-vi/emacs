@@ -11,11 +11,16 @@
 (add-to-list 'load-path "~/emacs/expand-region")
 (add-to-list 'load-path "~/emacs/js2-mode")
 
+
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives
              '("SC" . "http://joseito.republika.pl/sunrise-commander/") t)
+(add-to-list 'package-archives 
+	     '("org" . "http://orgmode.org/elpa/") t) ; Org-mode's repository
+(setq package-enable-at-startup nil)
+(package-initialize)
 
 ;; SHELL MODE ... make it nice
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
