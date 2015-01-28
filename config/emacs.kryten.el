@@ -7,7 +7,6 @@
 (require 'cl)
 
 (setq load-path (cons "~/emacs" load-path)) 
-
 (setq custom-file "~/emacs/custom.el")
 
 
@@ -36,6 +35,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'wvi-init)
+
+
 
 ;; SLIME SETUP
 (add-to-list 'load-path "~/emacs/slime/")  ; your SLIME directory

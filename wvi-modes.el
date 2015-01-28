@@ -12,10 +12,12 @@
 (add-to-list 'load-path "~/emacs/js2-mode")
 
 (require 'package)
+(package-initialize)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives
              '("SC" . "http://joseito.republika.pl/sunrise-commander/") t)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 
 ;; SHELL MODE ... make it nice
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
@@ -67,6 +69,7 @@
 ;;abbrev and flyspell in org-mode
 (add-hook 'org-mode-hook #'(lambda ()(abbrev-mode t)(flyspell-mode t)))
 (require 'ox-wk)
+(require 'ox-odt)
 (setq org-export-default-language "en"
       org-export-html-extension "html"
       org-export-with-timestamps nil
@@ -189,6 +192,8 @@
                                      (lambda ()
                                        (interactive)
                                        (manual-entry (current-word)))))))
+;;MAKEFILE
+(add-hook 'makefile-mode-hook 'indent-tabs-mode)
 
 ;; GO-LANG
 (require 'go-mode-load)
