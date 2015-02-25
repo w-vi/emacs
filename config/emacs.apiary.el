@@ -7,7 +7,7 @@
 (require 'cl)
 
 (setq load-path (cons "~/emacs" load-path)) 
-(setq custom-file "~/emacs/custom.el")
+(setq custom-file "~/emacs/custom.apaiary.el")
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -48,6 +48,7 @@
 
 ;; TRAMP
 (require 'tramp)
+(setq tramp-default-method "ssh")
 
 ;; GYP
 (setq load-path (cons "~/src/gyp/tools/emacs" load-path))

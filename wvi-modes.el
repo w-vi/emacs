@@ -162,7 +162,7 @@
 
 ;; PROGRAMMING STUFF
 ;;C style conventions
-(setq c-default-style "bsd"
+(setq c-default-style "k&r"
       c-basic-offset 4)
 ;spaces instead of TAB in C/C++ mode
 (setq c-mode-hook (function
