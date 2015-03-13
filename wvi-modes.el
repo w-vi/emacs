@@ -91,7 +91,7 @@
       org-export-allow-BIND t
       org-publish-list-skipped-files t
       org-publish-use-timestamps-flag nil
-      org-export-babel-evaluate nil
+      org-export-babel-evaluate t
       org-confirm-babel-evaluate nil)
 
 ;this line activates ditaa
