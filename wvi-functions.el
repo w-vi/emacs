@@ -17,7 +17,11 @@
   "Hooks which run on file write for programming modes"
   (prog1 nil
     (set-buffer-file-coding-system 'utf-8-unix)
-    (if (not (member major-mode '(makefile-mode makefile-bsdmake-mode makefile-gmake-mode)))
+    (if (not (member major-mode
+                     '(makefile-mode
+                       makefile-bsdmake-mode
+                       makefile-gmake-mode
+                       makefile-automake-mode)))
         (untabify-buffer))
     (copyright-update)
     (delete-trailing-whitespace)))

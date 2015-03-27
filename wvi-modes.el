@@ -198,7 +198,7 @@
                                        (manual-entry (current-word)))))))
 ;;MAKEFILE
 (add-hook 'makefile-mode-hook 'indent-tabs-mode)
-(add-to-list 'auto-mode-alist '("\\.am\\'" . makefile-gmake-mode))
+(add-to-list 'auto-mode-alist '("\\.am\\'" . makefile-automake-mode))
 
 ;; GO-LANG
 (require 'go-mode-load)
