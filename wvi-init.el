@@ -103,6 +103,9 @@
 (global-set-key (kbd "M-<up>") 'move-line-region-up)
 (global-set-key (kbd "M-<down>") 'move-line-region-down)
 
+;;Compile
+(global-set-key "\C-c\C-cc" 'compile) 
+
 ;; Move between windows
 (global-set-key [s-left] 'windmove-left) 
 (global-set-key [s-right] 'windmove-right) 
@@ -156,7 +159,8 @@
   (lambda ()
     (interactive) (list-bookmarks) (switch-to-buffer "*Bookmark List*")))
 
-;; F7 ?
+;; F7 transpose windows
+(define-key global-map [f7] 'transpose-windows)
 
 ;; F8 new file buffer
 (define-key global-map [f8] 'wvi-create-file-buffer)
@@ -174,4 +178,4 @@
 (define-key global-map [f11] (lambda () (interactive) (undo-tree-undo)))
 (define-key global-map [(control f11)] (lambda () (interactive) (undo-tree-redo)))
 
-; F12 kryten free, geewa ispell
+; F12 free

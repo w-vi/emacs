@@ -124,6 +124,12 @@
 ;; HIGHLIGHT INDENT
 (require 'highlight-indentation)
 
+;; HIGLIGHT LISP stuff
+(require 'highlight-quoted)
+(require 'highlight-defined)
+(add-hook 'emacs-lisp-mode-hook
+          #'(lambda ()(highlight-quoted-mode t)(highlight-defined-mode t)))
+
 ;; YASNIPPET
 (require 'yasnippet)
 (setq yas-trigger-key nil)
