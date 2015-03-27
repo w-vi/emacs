@@ -20,7 +20,7 @@
     (if (not (member major-mode '(makefile-mode makefile-bsdmake-mode makefile-gmake-mode)))
         (untabify-buffer))
     (copyright-update)
-    (maybe-delete-trailing-whitespace)))
+    (delete-trailing-whitespace)))
 
 (defun delete-trailing-whitespace-p ()
   "Should we delete trailing whitespace when saving this file?"

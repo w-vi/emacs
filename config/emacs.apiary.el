@@ -1,19 +1,19 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
-;; Startup and Behavior Controls 
+;;
+;; Startup and Behavior Controls
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'cl)
 
-(setq load-path (cons "~/emacs" load-path)) 
+(setq load-path (cons "~/emacs" load-path))
 (setq custom-file "~/emacs/custom.apaiary.el")
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
+;;
 ;; Machine Specific Configuration Section
-;; 
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; go FULLSCREEN
@@ -29,12 +29,22 @@
   (toggle-fullscreen))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
+;;
 ;; Load the real init
-;; 
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'wvi-init)
+
+(require 'fill-column-indicator)
+(setq-default fci-rule-column 80)
+(setq fci-rule-width 5)
+(add-hook 'c-mode-hook 'fci-mode)
+(add-hook 'emacs-lisp-mode-hook 'fci-mode)
+(add-hook 'python-mode-hook 'fci-mode)
+(add-hook 'makefile-mode-hook 'fci-mode)
+(add-hook 'autoconf-mode-hook 'fci-mode)
+(add-hook 'rst-mode-hook 'fci-mode)
 
 (defun wvi-cedet-hook ()
   (setq ac-sources (append '(ac-source-semantic) ac-sources))
