@@ -111,6 +111,7 @@
 (global-set-key [s-right] 'windmove-right) 
 (global-set-key [s-up] 'windmove-up) 
 (global-set-key [s-down] 'windmove-down)
+(global-set-key [s-next] 'transpose-windows)
 
 ;;Ace jump mode 
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)

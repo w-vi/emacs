@@ -18,7 +18,7 @@
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives
              '("SC" . "http://joseito.republika.pl/sunrise-commander/") t)
-(add-to-list 'package-archives 
+(add-to-list 'package-archives
              '("org" . "http://orgmode.org/elpa/") t) ; Org-mode's repository
 (setq package-enable-at-startup nil)
 (package-initialize)
@@ -31,17 +31,17 @@
   (winner-mode t))
 
 ;;GGTAGS
-(autoload 
+(autoload
   'ggtags-mode
   "ggtags"
   "Emacs gnu global tags minor mode"
   t)
 
 ;; ACE JUMP MODE
-(autoload 
+(autoload
   'ace-jump-mode
   "ace-jump-mode"
-  "Emacs quick move minor mode"   
+  "Emacs quick move minor mode"
   t)
 
 ;;IDO-MODE
@@ -91,13 +91,13 @@
       org-export-allow-BIND t
       org-publish-list-skipped-files t
       org-publish-use-timestamps-flag nil
-      org-export-babel-evaluate nil
+      org-export-babel-evaluate t
       org-confirm-babel-evaluate nil)
 
 ;this line activates ditaa
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((ditaa . t))) 
+ '((ditaa . t)))
 
 ;; HIGHLIGHT CURRENT LINE
 (global-hl-line-mode t)
@@ -168,7 +168,7 @@
 
 ;; PROGRAMMING STUFF
 ;;C style conventions
-(setq c-default-style "bsd"
+(setq c-default-style "k&r"
       c-basic-offset 4)
 ;spaces instead of TAB in C/C++ mode
 (setq c-mode-hook (function
@@ -178,7 +178,7 @@
                      (c-toggle-auto-hungry-state 1))))
 
 ; style I want to use in c++ mode
-(c-add-style "my-style" 
+(c-add-style "my-style"
              '("stroustrup"
                (indent-tabs-mode . nil)        ; use spaces rather than tabs
                (c-basic-offset . 4)            ; indent by four spaces
@@ -187,7 +187,7 @@
                                    (statement-case-open . +)))))
 (defun my-c++-mode-hook ()
   (c-set-style "my-style")        ; use my-style defined above
-  (auto-fill-mode)         
+  (auto-fill-mode)
   (c-toggle-auto-hungry-state 1))
 
 (add-hook 'c++-mode-hook 'my-c++-mode-hook)
@@ -197,21 +197,22 @@
 
 ; add man pages refernce on [C-h d] key
 (dolist (hook '(c-mode-hook c++-mode-hook))
-  (add-hook hook 
+  (add-hook hook
             (lambda ()(local-set-key (kbd "C-h d")
                                      (lambda ()
                                        (interactive)
                                        (manual-entry (current-word)))))))
 ;;MAKEFILE
 (add-hook 'makefile-mode-hook 'indent-tabs-mode)
+(add-to-list 'auto-mode-alist '("\\.am\\'" . makefile-automake-mode))
 
 ;; GO-LANG
 (require 'go-mode-load)
-(add-hook 'go-mode-hook 
+(add-hook 'go-mode-hook
   (lambda ()
-    (setq-default) 
-    (setq tab-width 4) 
-    (setq standard-indent 4) 
+    (setq-default)
+    (setq tab-width 4)
+    (setq standard-indent 4)
     (setq indent-tabs-mode nil)
     (setq show-trailing-whitespace t)
     (if (not (string-match "go" compile-command))
