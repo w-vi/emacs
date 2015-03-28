@@ -104,7 +104,7 @@
 (global-set-key (kbd "M-<down>") 'move-line-region-down)
 
 ;;Compile
-(global-set-key "\C-c\C-cc" 'compile) 
+(global-set-key "\C-c\C-m" 'magit-status) 
 
 ;; Move between windows
 (global-set-key [s-left] 'windmove-left) 
@@ -179,4 +179,6 @@
 (define-key global-map [f11] (lambda () (interactive) (undo-tree-undo)))
 (define-key global-map [(control f11)] (lambda () (interactive) (undo-tree-redo)))
 
-; F12 free
+; F12 compile!
+(define-key global-map [f12] 'compile)
+
