@@ -1,19 +1,19 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
-;; Startup and Behavior Controls 
+;;
+;; Startup and Behavior Controls
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'cl)
 
-(setq load-path (cons "~/emacs" load-path)) 
+(setq load-path (cons "~/emacs" load-path))
 (setq custom-file "~/emacs/custom.el")
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
+;;
 ;; Machine Specific Configuration Section
-;; 
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; go FULLSCREEN
@@ -28,10 +28,14 @@
 (when (eq window-system 'x)
   (toggle-fullscreen))
 
+;; start server if not runing
+(load "server")
+(unless (server-running-p) (server-start))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; 
+;;
 ;; Load the real init
-;; 
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'wvi-init)
@@ -77,10 +81,3 @@
 ;;;;  these are the lines i use to set up correct auto-ing
 (require 'bison-mode)
 (require 'flex-mode)
-
-
-(add-to-list 'load-path "~/src/elisp/keyfreq")
-(require 'keyfreq)
-(keyfreq-mode 1)
-(keyfreq-autosave-mode 1)
-

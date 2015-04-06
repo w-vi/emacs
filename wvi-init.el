@@ -60,7 +60,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;;AUTOBACKUP
-(setq backup-directory-alist 
+(setq backup-directory-alist
       '(("." . "~/.emacs.d/backups/")))
 ; always use copying to create backup files (don't clobber symlinks)
 (setq backup-by-copying t)
@@ -103,17 +103,21 @@
 (global-set-key (kbd "M-<up>") 'move-line-region-up)
 (global-set-key (kbd "M-<down>") 'move-line-region-down)
 
-;;Compile
-(global-set-key "\C-c\C-m" 'magit-status) 
+;;MAGIT
+(global-set-key "\C-c\C-m" 'magit-status)
+
+;; Dired toggle dotfiles
+(require 'dired )
+(define-key dired-mode-map (kbd "C-c C-d") 'dired-dotfiles-toggle)
 
 ;; Move between windows
-(global-set-key [s-left] 'windmove-left) 
-(global-set-key [s-right] 'windmove-right) 
-(global-set-key [s-up] 'windmove-up) 
+(global-set-key [s-left] 'windmove-left)
+(global-set-key [s-right] 'windmove-right)
+(global-set-key [s-up] 'windmove-up)
 (global-set-key [s-down] 'windmove-down)
 (global-set-key [s-next] 'transpose-windows)
 
-;;Ace jump mode 
+;;Ace jump mode
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
 ;; THING AT POINT EDIT
@@ -181,4 +185,3 @@
 
 ; F12 compile!
 (define-key global-map [f12] 'compile)
-
