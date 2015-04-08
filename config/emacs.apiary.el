@@ -28,6 +28,12 @@
 (when (eq window-system 'x)
   (toggle-fullscreen))
 
+
+;; start server if not runing
+(load "server")
+(unless (server-running-p) (server-start))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Load the real init
@@ -44,6 +50,7 @@
 (add-hook 'python-mode-hook 'fci-mode)
 (add-hook 'makefile-mode-hook 'fci-mode)
 (add-hook 'autoconf-mode-hook 'fci-mode)
+(add-hook 'js2-mode-hook 'fci-mode)
 (add-hook 'rst-mode-hook 'fci-mode)
 
 (defun wvi-cedet-hook ()
