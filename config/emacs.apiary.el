@@ -70,3 +70,16 @@
 ;; GYP
 (setq load-path (cons "~/src/gyp/tools/emacs" load-path))
 (require 'gyp)
+
+;; Coffee-mode
+(defun wvi-coffee-compile-and-open ()
+  (interactive)
+  (let ((file-name (coffee-compiled-file-name (buffer-file-name))))
+    (coffee-compile-file)
+    (if (not (find-buffer-visiting file-name))
+      (switch-to-buffer (find-file-noselect file-name))
+      (switch-to-buffer (find-buffer-visiting file-name)))))
+
+(eval-after-load "coffee-mode"
+  '(progn
+     (define-key coffee-mode-map (kbd "C-c C-f") 'wvi-coffee-compile-and-open)))
