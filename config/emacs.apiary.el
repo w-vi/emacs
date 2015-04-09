@@ -86,4 +86,4 @@
        '(("\\.coffee\\'" (".js"))
          ("\\.js\\'" (".coffee"))))
      (define-key coffee-mode-map (kbd "C-c C-f") 'wvi-coffee-compile-and-open)
-     (setq-default ff-other-file-alist 'wvi-coffee-other-file-alist)))
+     (add-to-list ff-other-file-alist 'wvi-coffee-other-file-alist)))
