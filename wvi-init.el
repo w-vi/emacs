@@ -44,6 +44,9 @@
 (global-font-lock-mode t) ; turn on syntax highlight
 (setq text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
 
+;; Do not delete trailing line at the end of files
+(setq delete-trailing-lines nil)
+
 ;; THEME
 (add-to-list 'custom-theme-load-path "~/emacs/themes/")
 (load-theme 'zenburn t)
@@ -185,3 +188,4 @@
 
 ; F12 compile!
 (define-key global-map [f12] 'compile)
+

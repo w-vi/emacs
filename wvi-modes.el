@@ -214,7 +214,7 @@
     (setq tab-width 4)
     (setq standard-indent 4)
     (setq indent-tabs-mode nil)
-    (setq show-trailing-whitespace t)
+    (setq show-trailing-whitespace nil)
     (if (not (string-match "go" compile-command))
         (set (make-local-variable 'compile-command)
              "go build -v && go test -v && go vet"))
