@@ -130,6 +130,10 @@
 (add-hook 'emacs-lisp-mode-hook
           #'(lambda ()(highlight-quoted-mode t)(highlight-defined-mode t)))
 
+;; Dockerfile
+(require 'dockerfile-mode)
+(add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+
 ;; YASNIPPET
 (require 'yasnippet)
 (setq yas-trigger-key nil)
