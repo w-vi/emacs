@@ -40,6 +40,16 @@
 
 (require 'wvi-init)
 
+(require 'fill-column-indicator)
+(setq-default fci-rule-column 80)
+(setq fci-rule-width 5)
+(add-hook 'c-mode-hook 'fci-mode)
+(add-hook 'emacs-lisp-mode-hook 'fci-mode)
+(add-hook 'python-mode-hook 'fci-mode)
+(add-hook 'makefile-mode-hook 'fci-mode)
+(add-hook 'autoconf-mode-hook 'fci-mode)
+(add-hook 'rst-mode-hook 'fci-mode)
+(add-hook 'js2-mode-hook 'fci-mode)
 
 
 ;; SLIME SETUP
