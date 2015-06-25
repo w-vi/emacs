@@ -38,6 +38,16 @@
   (require 'cl)
   (require 'auto-complete))
 
+(defgroup go-autocomplete nil
+  "auto-complete for go language."
+  :prefix "ac-go-"
+  :group 'auto-complete)
+
+(defcustom ac-go-expand-arguments-into-snippets t
+  "Expand function arguments into snippets. This feature requires `yasnippet'."
+  :type 'boolean
+  :group 'go-autocomplete)
+
 ;; Close gocode daemon at exit unless it was already running
 (eval-after-load "go-mode"
   '(progn
@@ -68,10 +78,10 @@
                                (incf cur (cdr a))))
                            (car a))
                          (mapcar (lambda (string)
-				   (let ((score (ac-comphist-score db string prefix)))
-				     (incf total score)
-				     (cons string score)))
-				 collection)))
+                                   (let ((score (ac-comphist-score db string prefix)))
+                                     (incf total score)
+                                     (cons string score)))
+                                 collection)))
     (if threshold
         (cons n result)
       result)))
@@ -101,20 +111,62 @@
 
 (defun ac-go-get-candidates (strings)
   (let ((prop (lambda (entry)
-		(let ((name (nth 0 entry))
-		      (summary (nth 1 entry)))
-		  (propertize name
-			      'summary summary))))
-	(split (lambda (strings)
-		 (mapcar (lambda (str)
-			   (split-string str ",," t))
-			 strings))))
+                (let* ((name (nth 0 entry))
+                       (summary (nth 1 entry))
+                       (symbol (substring summary 0 1)))
+                  (propertize name
+                              'summary summary
+                              'symbol symbol))))
+        (split (lambda (strings)
+                 (mapcar (lambda (str)
+                           (split-string str ",," t))
+                         strings))))
     (mapcar prop (funcall split strings))))
 
 (defun ac-go-action ()
   (let ((item (cdr ac-last-completion)))
-    (if (stringp item)
-        (message "%s" (get-text-property 0 'summary item)))))
+    (when (stringp item)
+      (setq symbol (get-text-property 0 'summary item))
+      (message "%s" symbol)
+      (when (and (featurep 'yasnippet) ac-go-expand-arguments-into-snippets)
+        (ac-go-insert-yas-snippet-string symbol)))))
+
+(defun ac-go-insert-yas-snippet-string (s)
+  (let ((ret "") (pos (point)) match-res match args)
+    (save-match-data
+      (setq match-res (string-match "func(." s))
+      (when (and match-res (= 0 match-res))
+        (setq match (match-string 0 s))
+        (unless (string= match "func()")
+          (setq args (ac-go-split-args s))
+          (dolist (arg args)
+            (setq ret (concat ret "${" arg "}, ")))
+          (when (> (length ret) 2)
+            (setq ret (substring ret 0 (- (length ret) 2)))))
+        (setq ret (concat "(" ret ")"))
+        (yas-expand-snippet ret pos pos)))))
+
+(defun ac-go-split-args (args-str)
+  (let ((cur 5)
+        (pre 5)
+        (unmatch-l-paren-count 1)
+        (args (list))
+        c)
+    (while (> unmatch-l-paren-count 0)
+      (setq c (aref args-str cur))
+      (cond ((= ?\( c)
+             (setq unmatch-l-paren-count (1+ unmatch-l-paren-count)))
+            ((= ?\) c)
+             (setq unmatch-l-paren-count (1- unmatch-l-paren-count))
+             (when (= 0 unmatch-l-paren-count)
+               (push (substring args-str pre cur) args)))
+            ((= ?\, c)
+             (when (= 1 unmatch-l-paren-count)
+               (push (substring args-str pre cur) args)
+               (setq cur (+ cur 2))
+               (setq pre cur))))
+      (setq cur (1+ cur)))
+    (nreverse args)))
 
 (defun ac-go-document (item)
   (if (stringp item)
@@ -139,8 +191,7 @@
     (action . ac-go-action)
     (prefix . ac-go-prefix)
     (requires . 0)
-    (cache)
-    (symbol . "g")))
+    (cache)))
 
 (add-to-list 'ac-modes 'go-mode)
 
