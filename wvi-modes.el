@@ -211,13 +211,13 @@
 (add-to-list 'auto-mode-alist '("\\.am\\'" . makefile-automake-mode))
 
 ;; GO-LANG
-(require 'go-mode-load)
+(require 'go-mode-autoloads)
 (add-hook 'go-mode-hook
   (lambda ()
     (setq-default)
+    (setq gofmt-command "goimports")
     (setq tab-width 4)
-    (setq standard-indent 4)
-    (setq indent-tabs-mode nil)
+    (setq indent-tabs-mode t)
     (setq show-trailing-whitespace nil)
     (if (not (string-match "go" compile-command))
         (set (make-local-variable 'compile-command)

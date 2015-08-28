@@ -35,7 +35,8 @@
                      '(makefile-mode
                        makefile-bsdmake-mode
                        makefile-gmake-mode
-                       makefile-automake-mode)))
+                       makefile-automake-mode
+                       go-mode)))
         (untabify-buffer))
     (copyright-update)
     (delete-trailing-whitespace)))
