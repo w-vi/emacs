@@ -42,6 +42,15 @@
 
 (require 'wvi-init)
 
+;; I want to have same path as in shell
+(require 'exec-path-from-shell)
+(when (memq window-system '(x))
+  (progn
+    (exec-path-from-shell-initialize)
+    (exec-path-from-shell-copy-env "PYTHONPATH")
+    (exec-path-from-shell-copy-env "GOPATH")
+    (exec-path-from-shell-copy-env "GOROOT")))
+
 (require 'fill-column-indicator)
 (setq-default fci-rule-column 80)
 (setq fci-rule-width 5)
@@ -62,6 +71,8 @@
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/ecb")
 (setq-default ecb-tip-of-the-day nil)
 (require 'ecb)
+
+
 
 ;; TRAMP
 (require 'tramp)
