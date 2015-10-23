@@ -40,6 +40,10 @@
 (setq scroll-margin 2)
 (setq scroll-preserve-screen-position 1)
 
+;; improve the speed by slowing down the GC
+;; GC is triggered every 20MB instead of default 0.8 MB
+(setq gc-cons-threshold 20000000)
+
 ; programming conveniences:
 (global-font-lock-mode t) ; turn on syntax highlight
 (setq text-mode-hook (quote (turn-on-auto-fill text-mode-hook-identify)))
