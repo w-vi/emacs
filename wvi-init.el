@@ -47,6 +47,9 @@
 ;; Do not delete trailing line at the end of files
 (setq delete-trailing-lines nil)
 
+;; projectile everywhere
+(projectile-global-mode)
+
 ;; THEME
 (add-to-list 'custom-theme-load-path "~/emacs/themes/")
 (load-theme 'zenburn t)
