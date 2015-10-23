@@ -45,9 +45,13 @@
   t)
 
 ;;IDO-MODE
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
+(require 'flx-ido)
 (ido-mode t)
+(ido-everywhere t)
+(flx-ido-mode t)
+;; disable ido faces to see flx highlights.
+(setq ido-enable-flex-matching t)
+(setq ido-use-faces nil)
 
 ;;ELECTRIC-PAIR
 (when (fboundp 'electric-pair-mode)
