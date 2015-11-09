@@ -17,8 +17,6 @@
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives
-             '("SC" . "http://joseito.republika.pl/sunrise-commander/") t)
-(add-to-list 'package-archives
              '("org" . "http://orgmode.org/elpa/") t) ; Org-mode's repository
 (setq package-enable-at-startup nil)
 (package-initialize)
@@ -52,6 +50,12 @@
 ;; disable ido faces to see flx highlights.
 (setq ido-enable-flex-matching t)
 (setq ido-use-faces nil)
+
+;;PROJECTILE
+(require 'projectile)
+; projectile everywhere
+(projectile-global-mode)
+
 
 ;;ELECTRIC-PAIR
 (when (fboundp 'electric-pair-mode)

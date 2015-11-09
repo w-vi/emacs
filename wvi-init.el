@@ -51,9 +51,6 @@
 ;; Do not delete trailing line at the end of files
 (setq delete-trailing-lines nil)
 
-;; projectile everywhere
-(projectile-global-mode)
-
 ;; THEME
 (add-to-list 'custom-theme-load-path "~/emacs/themes/")
 (load-theme 'zenburn t)
@@ -151,10 +148,13 @@
 
 
 ;; TABBAR
-(global-set-key [f1] 'tabbar-forward)
-(global-set-key [(control f1)] 'tabbar-backward)
+(global-set-key [C-prior] 'tabbar-backward-tab)  ; previous tab: C-PgUp
+(global-set-key [C-next]  'tabbar-forward-tab)   ; next tab:     C-PgDn
 (global-set-key (kbd "C-S-p") 'tabbar-backward-group)
 (global-set-key (kbd "C-S-n") 'tabbar-forward-group)
+
+; F1 manual page
+(global-set-key [f1] 'man)
 
 ; F2 YASNIPPET insert and expand
 
