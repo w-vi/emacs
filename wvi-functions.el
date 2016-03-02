@@ -266,3 +266,10 @@
       ((pkg (read-from-minibuffer "Test package: " nil nil nil 'hook-go-pkg)))
     (if (not (string= pkg ""))
         (compile (concat "go test \"" pkg "\"")))))
+
+;; Sudo open file using TRAMP
+;; (defadvice ido-find-file (after find-file-sudo activate)
+;;   "Find file as root if necessary."
+;;   (unless (and buffer-file-name
+;;                (file-writable-p buffer-file-name))
+;;     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))

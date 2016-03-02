@@ -5,11 +5,8 @@
 ;;PATHS
 (add-to-list 'load-path "~/emacs/site-lisp")
 (add-to-list 'load-path "~/emacs/yasnippet")
-(add-to-list 'load-path "~/emacs/auto-complete")
-(add-to-list 'load-path "~/emacs/emacs-jedi")
 (add-to-list 'load-path "~/emacs/tabbar")
 (add-to-list 'load-path "~/emacs/expand-region")
-(add-to-list 'load-path "~/emacs/js2-mode")
 
 
 (require 'package)
@@ -81,6 +78,7 @@
 ;;abbrev and flyspell in org-mode
 (add-hook 'org-mode-hook #'(lambda ()(abbrev-mode t)(flyspell-mode t)))
 (require 'ox-wk)
+(require 'ox-md)
 (require 'ox-odt)
 (setq org-export-default-language "en"
       org-export-html-extension "html"
@@ -158,24 +156,26 @@
 
 (add-hook 'emacs-lisp-mode-hook 'progmodes-hooks)
 
+;; Company
+(add-hook 'after-init-hook 'global-company-mode)
 
 ;; AUTOCOMPLETE
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/emacs/ac-dict")
-(setq-default ac-sources '(ac-source-abbrev ac-source-dictionary
-                           ac-source-words-in-same-mode-buffers ))
-(add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)
-(global-auto-complete-mode t)
-(ac-set-trigger-key "TAB")
-(ac-set-trigger-key "<tab>")
+;; (require 'auto-complete-config)
+;; (add-to-list 'ac-dictionary-directories "~/emacs/ac-dict")
+;; (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary
+;;                            ac-source-words-in-same-mode-buffers ))
+;; (add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)
+;; (global-auto-complete-mode t)
+;; (ac-set-trigger-key "TAB")
+;; (ac-set-trigger-key "<tab>")
 
 ;;READLINE-COMPLETE for getting autocompletition in shell buffer
 (setq explicit-shell-file-name "bash")
 (setq explicit-bash-args '("-c" "export EMACS=; stty echo; bash"))
 (setq comint-process-echoes t)
 (require 'readline-complete)
-(add-to-list 'ac-modes 'shell-mode)
-(add-hook 'shell-mode-hook 'ac-rlc-setup-sources)
+;;(add-to-list 'ac-modes 'shell-mode)
+;;(add-hook 'shell-mode-hook 'ac-rlc-setup-sources)
 
 
 ;; PROGRAMMING STUFF
@@ -219,7 +219,10 @@
 (add-to-list 'auto-mode-alist '("\\.am\\'" . makefile-automake-mode))
 
 ;; GO-LANG
+(require 'company-go)
 (require 'go-mode-autoloads)
+(add-hook 'go-mode-hook (lambda ()
+))
 (add-hook 'go-mode-hook
   (lambda ()
     (setq-default)
@@ -230,9 +233,10 @@
     (if (not (string-match "go" compile-command))
         (set (make-local-variable 'compile-command)
              "go build -v && go test -v && go vet"))
-    (add-hook 'before-save-hook 'gofmt-before-save)))
+    (add-hook 'before-save-hook 'gofmt-before-save)
+    (set (make-local-variable 'company-backends) '(company-go))
+    (company-mode)))
 (add-hook 'go-mode-hook 'progmodes-hooks)
-(require 'go-autocomplete)
 
 
 ;; WEB MODE web-mode.org
@@ -246,6 +250,7 @@
   '(progn
      (setq js2-missing-semi-one-line-override t)
      (setq-default js2-basic-offset 2)))
+(setq js-indent-level 2)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-hook 'js2-mode-hook 'progmodes-hooks)
 
@@ -257,7 +262,8 @@
 
 ;; PYTHON
 ;;set ipython as default python shell
-(add-hook 'python-mode-hook '(lambda () (setq python-indent 4)))
+(add-hook 'python-mode-hook '(lambda () (setq python-indent 4)
+                               (add-to-list 'company-backends 'company-jedi)))
 (setq
  python-shell-interpreter "ipython"
  python-shell-interpreter-args ""
@@ -269,6 +275,6 @@
    "';'.join(module_completion('''%s'''))\n"
  python-shell-completion-string-code
    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
-(require 'jedi)
-(add-hook 'python-mode-hook 'jedi:ac-setup)
+;; (require 'jedi)
+;; (add-hook 'python-mode-hook 'jedi:setup)
 (add-hook 'python-mode-hook 'progmodes-hooks)
