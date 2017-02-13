@@ -4,7 +4,6 @@
 
 ;;PATHS
 (add-to-list 'load-path "~/emacs/site-lisp")
-(add-to-list 'load-path "~/emacs/yasnippet")
 (add-to-list 'load-path "~/emacs/tabbar")
 (add-to-list 'load-path "~/emacs/expand-region")
 
@@ -142,7 +141,7 @@
 
 ;; YASNIPPET
 (require 'yasnippet)
-(setq yas-trigger-key nil)
+(setq yas-trigger-key [f2])
 (yas-reload-all)
 ;; This is where your snippets will lie.
 (setq yas-snippet-dirs '("~/emacs/yasnippet/snippets"))
@@ -152,7 +151,7 @@
 ;;(add-hook 'python-mode-hook #'(lambda () (yas-minor-mode)))
 (add-hook 'org-mode-hook #'(lambda () (yas-minor-mode)))
 (global-set-key [(control f2)] 'yas-insert-snippet)
-(global-set-key [f2] 'yas-expand)
+;;(global-set-key [f2] 'yas-expand)
 
 (add-hook 'emacs-lisp-mode-hook 'progmodes-hooks)
 
@@ -177,6 +176,18 @@
 ;;(add-to-list 'ac-modes 'shell-mode)
 ;;(add-hook 'shell-mode-hook 'ac-rlc-setup-sources)
 
+
+;; VLF setup
+(require 'vlf-setup)
+(custom-set-variables
+ '(vlf-application 'dont-ask))
+
+;; MAGIT
+(require 'magit-gh-pulls)
+(add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
+
+;; PACKAGE_LINT
+(require 'package-lint)
 
 ;; PROGRAMMING STUFF
 ;;C style conventions
@@ -219,10 +230,8 @@
 (add-to-list 'auto-mode-alist '("\\.am\\'" . makefile-automake-mode))
 
 ;; GO-LANG
+(require 'go-mode)
 (require 'company-go)
-(require 'go-mode-autoloads)
-(add-hook 'go-mode-hook (lambda ()
-))
 (add-hook 'go-mode-hook
   (lambda ()
     (setq-default)
@@ -230,6 +239,11 @@
     (setq tab-width 4)
     (setq indent-tabs-mode t)
     (setq show-trailing-whitespace nil)
+    (local-set-key (kbd "M-.") 'godef-jump)
+    ; Go doc
+    (local-set-key (kbd "C-c C-g") 'godoc)
+    ; Go oracle
+    (load-file "$GOPATH/src/golang.org/x/tools/cmd/oracle/oracle.el")
     (if (not (string-match "go" compile-command))
         (set (make-local-variable 'compile-command)
              "go build -v && go test -v && go vet"))
@@ -237,7 +251,6 @@
     (set (make-local-variable 'company-backends) '(company-go))
     (company-mode)))
 (add-hook 'go-mode-hook 'progmodes-hooks)
-
 
 ;; WEB MODE web-mode.org
 (require 'web-mode)
@@ -261,20 +274,26 @@
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
 ;; PYTHON
-;;set ipython as default python shell
-(add-hook 'python-mode-hook '(lambda () (setq python-indent 4)
-                               (add-to-list 'company-backends 'company-jedi)))
-(setq
- python-shell-interpreter "ipython"
- python-shell-interpreter-args ""
- python-shell-prompt-regexp "In \\[[0-9]+\\]: "
- python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
- python-shell-completion-setup-code
-   "from IPython.core.completerlib import module_completion"
- python-shell-completion-module-string-code
-   "';'.join(module_completion('''%s'''))\n"
- python-shell-completion-string-code
-   "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
-;; (require 'jedi)
-;; (add-hook 'python-mode-hook 'jedi:setup)
-(add-hook 'python-mode-hook 'progmodes-hooks)
+(elpy-enable)
+;; (load-library "python-import-add")
+(defun wvi-python-hook ()
+  (ggtags-mode 1)
+  (yas-minor-mode-on)
+  (hs-minor-mode)
+  (setq python-indent-offset 4))
+
+(add-hook 'python-mode-hook 'wvi-python-hook)
+
+;; ;;set ipython as default python shell
+;; (setq
+;;  python-shell-interpreter "ipython"
+;;  python-shell-interpreter-args ""
+;;  python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+;;  python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+;;  python-shell-completion-setup-code
+;;    "from IPython.core.completerlib import module_completion"
+;;  python-shell-completion-module-string-code
+;;    "';'.join(module_completion('''%s'''))\n"
+;;  python-shell-completion-string-code
+;;    "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+

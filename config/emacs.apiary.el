@@ -1,13 +1,22 @@
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; Startup and Behavior Controls
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (require 'cl)
 
 (setq load-path (cons "~/emacs" load-path))
-(setq custom-file "~/emacs/custom.apaiary.el")
+(add-to-list 'load-path "~/emacs/site-lisp")
+(setq custom-file "~/emacs/custom.apiary.el")
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -62,8 +71,11 @@
 (add-hook 'js2-mode-hook 'fci-mode)
 (add-hook 'rst-mode-hook 'fci-mode)
 
+(require 'cc-mode)
+(require 'semantic)
+(global-semanticdb-minor-mode 1)
+(global-semantic-idle-scheduler-mode 1)
 (defun wvi-cedet-hook ()
-  (setq ac-sources (append '(ac-source-semantic) ac-sources))
   (local-set-key (kbd "RET") 'newline-and-indent)
   (semantic-mode 1))
 (add-hook 'c-mode-common-hook 'wvi-cedet-hook)
@@ -79,7 +91,6 @@
 (setq tramp-default-method "ssh")
 
 ;; GYP
-(setq load-path (cons "~/src/gyp/tools/emacs" load-path))
 (require 'gyp)
 
 ;; Coffee-mode
@@ -99,5 +110,8 @@
      (define-key coffee-mode-map (kbd "C-c C-f") 'wvi-coffee-compile-and-open)
      (setq ff-other-file-alist 'wvi-coffee-other-file-alist)))
 
-;(require 'edit-server)
-;(edit-server-start)
+(autoload 'apib-mode "apib-mode"
+        "Major mode for editing API Blueprint files" t)
+(add-to-list 'auto-mode-alist '("\\.apib\\'" . apib-mode))
+(setq yas-snippet-dirs (append yas-snippet-dirs '("~/src/elisp/apib-mode/yasnippet/apib-mode")))
+

@@ -38,7 +38,6 @@
                        makefile-automake-mode
                        go-mode)))
         (untabify-buffer))
-    (copyright-update)
     (delete-trailing-whitespace)))
 
 (defun delete-trailing-whitespace-p ()
@@ -273,3 +272,4 @@
 ;;   (unless (and buffer-file-name
 ;;                (file-writable-p buffer-file-name))
 ;;     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+

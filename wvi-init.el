@@ -1,12 +1,6 @@
 (provide 'wvi-init)
 
 ;;; GENERAL SETTINGS
-; to undo, do M-x tool-bar-mode;
-(when window-system
-  (tool-bar-mode -1)
-  (blink-cursor-mode -1) ;; blinking cursor is evil
-  (scroll-bar-mode -1)) ;; scrollbar is pretty useless
-
 ;;Save me buffers and stuff in the rare occasion that I close emacs
 (desktop-save-mode t)
 
@@ -195,4 +189,16 @@
 
 ; F12 compile!
 (define-key global-map [f12] 'compile)
+
+;; First frame maximized subsequent frames not
+(setq init-frame-alist '(fullscreen . maximized))
+
+(add-to-list 'default-frame-alist '(tool-bar-lines . 0))
+
+
+;;to undo, do M-x tool-bar-mode;
+(when window-system
+  (tool-bar-mode -1)
+  (blink-cursor-mode -1) ;; blinking cursor is evil
+  (scroll-bar-mode -1)) ;; scrollbar is pretty useless
 
