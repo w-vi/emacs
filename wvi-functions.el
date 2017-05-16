@@ -38,7 +38,9 @@
                        makefile-automake-mode
                        go-mode)))
         (untabify-buffer))
-    (delete-trailing-whitespace)))
+    (if (not (member major-mode
+                     '(markdown-mode)))
+        (delete-trailing-whitespace))))
 
 (defun delete-trailing-whitespace-p ()
   "Should we delete trailing whitespace when saving this file?"
@@ -137,6 +139,21 @@
   ;; put the point in the lowest line and return
   (next-line arg))
 
+
+;;;; Insert date
+(defun insert-date (prefix)
+  "Insert the current date. With prefix-argument, use ISO format. With
+   two prefix arguments, write out the day and month name."
+  (interactive "P")
+  (let ((format (cond
+                 ((not prefix) "%Y-%m-%d")
+                 ((equal prefix '(4)) "%d.%m.%Y")
+                 ((equal prefix '(16)) "%A, %d. %B %Y")))
+        (system-time-locale "cs_CZ"))
+    (insert (format-time-string format))))
+
+
+
 ;;Prefer horizontal splitting
 (defun split-window-prefer-horizonally (window)
            "If there's only one window (excluding any possibly active
@@ -198,6 +215,9 @@
   (if (region-active-p)
       (kill-ring-save (region-beginning) (region-end))
     (kill-ring-save (line-beginning-position) (line-beginning-position 2))))
+
+
+;;;; Dired related
 
 (require 'dired)
 (defun dired-back-to-top ()

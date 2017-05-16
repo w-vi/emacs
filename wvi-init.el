@@ -147,6 +147,10 @@
 (global-set-key (kbd "C-S-p") 'tabbar-backward-group)
 (global-set-key (kbd "C-S-n") 'tabbar-forward-group)
 
+
+;; Insert date
+(global-set-key (kbd "C-c C-d") 'insert-date)
+
 ; F1 manual page
 (global-set-key [f1] 'man)
 
